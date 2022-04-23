@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'api',
     'django_extensions',
     'rest_framework',
     'rest_framework.authtoken',
@@ -154,3 +155,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 django_on_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
+
+AUTH_USER_MODEL = 'core.User'
