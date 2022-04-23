@@ -1,0 +1,1 @@
+to run this locally: install django
