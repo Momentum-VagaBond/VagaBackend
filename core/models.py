@@ -35,7 +35,6 @@ class Log(models.Model):
     longitude = models.FloatField('longitude')
     details = models.TextField(max_length=250)
 
-
     def __str__(self):
         return self.log_number
 
