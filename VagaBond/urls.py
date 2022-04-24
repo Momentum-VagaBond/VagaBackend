@@ -25,5 +25,8 @@ urlpatterns = [
     path('auth/', include('djoser.urls.authtoken')),
 
     path('api/users/<int:pk>/', api_views.UsersView.as_view(), name='user-detail'), # user profile with associated trips
-    path('api/trips/', api_views.TripListView.as_view(), name='trip_list')# list of all trips, all users (so far)
+    path('api/trips/', api_views.TripListView.as_view(), name='trip-list'),# list of all trips, all users (so far)
+    path('api/users/<int:pk>/mytrips/', api_views.UserTripListView.as_view(), name ='my-trips'),
+
 ]
+
