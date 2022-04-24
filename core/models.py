@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.forms import CharField
+from datetime import date
 
 class User(AbstractUser):
-
+    bio = models.CharField(max_length=300, default=True)
     def __repr__(self):
         return f"<User username={self.username} pk={self.pk}>"
 
@@ -21,9 +23,10 @@ class Contacts(models.Model):
 
 class Trip(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='trips')
+    title = models.CharField(max_length=200, default=True)
     location = models.CharField(max_length=150, blank=True)
-    date_added = models.DateTimeField
-
+    duration = models.CharField(max_length=50, default=True)
+    
     def __str__(self):
         return self.location
 
@@ -36,7 +39,7 @@ class Log(models.Model):
     details = models.TextField(max_length=250)
 
     def __str__(self):
-        return self.log_number
+        return self.location
 
 
 
