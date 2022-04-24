@@ -27,6 +27,6 @@ urlpatterns = [
     path('api/users/<int:pk>/', api_views.UsersView.as_view(), name='user-detail'), # user profile with associated trips
     path('api/trips/', api_views.TripListView.as_view(), name='trip-list'),# list of all trips, all users (so far)
     path('api/users/<int:pk>/mytrips/', api_views.UserTripListView.as_view(), name ='my-trips'),
-
+    path('api/users/<int:pk>/<int:trip_pk>/log/', api_views.TripLogView.as_view(), name='trip-log'),
 ]
 
