@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-import api.views as api_views
+from api import views as api_views
 
 
 urlpatterns = [
@@ -24,6 +24,6 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
 
+    path('api/users/<int:pk>/', api_views.UsersView.as_view(), name='user-detail'), # user profile with associated trips
     path('api/trips/', api_views.TripListView.as_view(), name='trip_list')# list of all trips, all users (so far)
 ]
-
