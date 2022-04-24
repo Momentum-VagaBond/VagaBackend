@@ -22,11 +22,13 @@ class TripSerializer(serializers.ModelSerializer):
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
     user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
+
     def get_user(self, obj):
         return obj.user.username
+
     class Meta:
-        model=Trip
-        fields=(
+        model = Trip
+        fields = (
             'pk',
             'title',
             'location',
@@ -36,4 +38,22 @@ class TripSerializer(serializers.ModelSerializer):
             'user_first_name',
             'user_last_name',
             #contacts list
+        )
+
+class LogSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    
+    def get_user(self, obj):
+        return obj.user.username
+
+    class Meta:
+        model = Log
+        fields = (
+            'pk',
+            'user',
+            'trip',
+            'location',
+            'latitude',
+            'longitude',
+            'details',
         )

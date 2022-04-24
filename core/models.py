@@ -32,7 +32,8 @@ class Trip(models.Model):
 
 
 class Log(models.Model):
-    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='trip_log')
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='trip_logs')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='logs')
     location = models.CharField(max_length=75)
     latitude = models.FloatField('latitude')
     longitude = models.FloatField('longitude')
