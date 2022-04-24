@@ -3,8 +3,7 @@ from rest_framework import serializers
 
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    trips = serializers.HyperlinkedIdentityField(view_name='my-trips', format='html')
+class UserSerializer(serializers.ModelSerializer):
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
     user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
@@ -16,7 +15,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'user_first_name',
             'user_last_name',
             'bio',
-            'trips',
         )
 
 class TripSerializer(serializers.ModelSerializer):
