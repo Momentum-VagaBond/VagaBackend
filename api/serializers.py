@@ -18,3 +18,24 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'bio',
             'trips',
         )
+
+class TripSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
+    user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
+    user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
+    def get_user(self, obj):
+        return obj.user.username
+    class Meta:
+        model=Trip
+        fields=(
+            'pk',
+            'title',
+            'location',
+            'duration',
+            'user',
+            'username',
+            'user_first_name',
+            'user_last_name',
+            #contacts list
+        )
