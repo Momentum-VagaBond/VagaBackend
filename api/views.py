@@ -16,7 +16,12 @@ class TripListView(ListCreateAPIView):
 
 # class UserListView()
 
-# User profile with user's
+# User profile
 class UsersView(ListCreateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+
+class UserTripListView(ListAPIView):
+    serializer_class = TripSerializer
+    def get_queryset(self):
+        return self.request.user.trips.all()
