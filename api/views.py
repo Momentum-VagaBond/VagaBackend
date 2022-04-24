@@ -6,7 +6,7 @@ from rest_framework import permissions
 from .serializers import UserSerializer, TripSerializer
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
 
-
+# List of all trips
 class TripListView(ListCreateAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
@@ -14,3 +14,9 @@ class TripListView(ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+# class UserListView()
+
+# User profile with user's
+class UsersView(ListCreateAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
