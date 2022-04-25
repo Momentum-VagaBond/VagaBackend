@@ -28,6 +28,10 @@ class Trip(models.Model):
     location = models.CharField(max_length=150, blank=True)
     duration = models.CharField(max_length=50, default=True)
     
+    def start_trip(self):
+        return self.logs.filter(start=True).exists()
+    
+    
     def __str__(self):
         return self.location
 
@@ -39,6 +43,7 @@ class Log(models.Model):
     latitude = models.FloatField('latitude')
     longitude = models.FloatField('longitude')
     details = models.TextField(max_length=250)
+    start = models.BooleanField(default=False)
 
     def __str__(self):
         return self.location

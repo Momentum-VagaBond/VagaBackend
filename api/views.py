@@ -36,12 +36,10 @@ class TripLogView(ListCreateAPIView):
         serializer.save(user=self.request.user, trip=trip)
         return Log(serializer.data)
 
+#Comment on a log
 class LogCommentView(ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = LogCommentSerializer
-    # def get_queryset(self):
-    #     return self.request.user.user_comments['pk']
-
     def perform_create(self, serializer):
         log = get_object_or_404(Log, pk=self.kwargs["pk"])
         serializer.save(user=self.request.user, log=log)

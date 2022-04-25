@@ -42,7 +42,8 @@ class TripSerializer(serializers.ModelSerializer):
 
 class LogSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
-    
+    start_trip = serializers.SerializerMethodField()
+
     def get_user(self, obj):
         return obj.user.username
 
@@ -56,7 +57,10 @@ class LogSerializer(serializers.ModelSerializer):
             'latitude',
             'longitude',
             'details',
+            'start',
         )
+    def start_trip(self, obj):
+        return obj.start_trip()
 
 class LogCommentSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
