@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
@@ -33,7 +34,7 @@ class Trip(models.Model):
 
 class Log(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='trip_logs')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='logs')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='logs', default=True)
     location = models.CharField(max_length=75)
     latitude = models.FloatField('latitude')
     longitude = models.FloatField('longitude')
@@ -46,8 +47,9 @@ class Log(models.Model):
 
 class Comment(models.Model):
     log = models.ForeignKey(Log, on_delete=models.CASCADE, related_name='log_comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comments', default=True)
     comments = models.TextField(max_length=250)
-    date_commented = models.DateTimeField
+    date_commented = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.comments

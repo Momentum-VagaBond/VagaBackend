@@ -3,8 +3,10 @@ from core.models import User, Trip, Contacts, Log, Comment
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import permissions
-from .serializers import UserSerializer, TripSerializer, LogSerializer
+from .serializers import LogCommentSerializer, UserSerializer, TripSerializer, LogSerializer
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
+from rest_framework.response import Response
+from api import serializers
 
 # List of all trips
 class TripListView(ListCreateAPIView):
@@ -34,9 +36,13 @@ class TripLogView(ListCreateAPIView):
         serializer.save(user=self.request.user, trip=trip)
         return Log(serializer.data)
 
+class LogCommentView(ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = LogCommentSerializer
+    # def get_queryset(self):
+    #     return self.request.user.user_comments['pk']
 
-    # def create(self, request, *args, **kwargs):
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_create(serializer)
-    #     return Log(serializer.data)
+    def perform_create(self, serializer):
+        log = get_object_or_404(Log, pk=self.kwargs["pk"])
+        serializer.save(user=self.request.user, log=log)
+        

@@ -57,3 +57,20 @@ class LogSerializer(serializers.ModelSerializer):
             'longitude',
             'details',
         )
+
+class LogCommentSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    
+    
+    def get_user(self, obj):
+        return obj.user.username
+
+
+    class Meta:
+        model = Comment
+        fields = (
+            'user',
+            'comments',
+            'date_commented',
+            
+        )
