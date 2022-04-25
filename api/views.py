@@ -27,17 +27,13 @@ class UserTripListView(ListAPIView):
 
 # Log an entry on a trip
 class TripLogView(ListCreateAPIView):
+    queryset = Log.objects.all()
     serializer_class = LogSerializer
-    def get_queryset(self):
-        return self.request.user.trips.logs.all()
-
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        trip = get_object_or_404(Trip, pk=self.kwargs["pk"])
+        serializer.save(user=self.request.user, trip=trip)
+        return Log(serializer.data)
 
-    # def perform_create(self, serializer):
-    #     trip = get_object_or_404(Trip, pk=self.kwargs["pk"])
-    #     serializer.save(user=self.request.user, trip=trip)
-    #     return self.request.user.trips.logs.get()
 
     # def create(self, request, *args, **kwargs):
     #     serializer = self.get_serializer(data=request.data)
