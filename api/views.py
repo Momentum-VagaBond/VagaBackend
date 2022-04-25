@@ -19,7 +19,7 @@ class TripListView(ListCreateAPIView):
 # User profile
 class UsersView(ListCreateAPIView):
     serializer_class = UserSerializer
-    queryset = User.objects.all()
+    queryset = User.objects.filter()
 
 # Specific user's trip list
 class UserTripListView(ListAPIView):

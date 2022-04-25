@@ -52,7 +52,6 @@ class LogSerializer(serializers.ModelSerializer):
         fields = (
             'pk',
             'user',
-            'trip',
             'location',
             'latitude',
             'longitude',

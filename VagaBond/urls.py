@@ -24,11 +24,11 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
 
-    path('api/profile', api_views.UsersView.as_view(), name='user-detail'), # user profile
+    path('api/profile/<int:user_pk>/', api_views.UsersView.as_view(), name='user-detail'), # user profile
     path('api/trips/', api_views.TripListView.as_view(), name='trip-list'),# list of all trips, all users (so far)
-    path('api/users/<int:pk>/mytrips/', api_views.UserTripListView.as_view(), name ='my-trips'),
-    path('api/users/<int:pk>/<int:trip_pk>/log/', api_views.TripLogView.as_view(), name='trip-log'),
-    path('api/mytrips/<int:trip_pk>/', api_views.TripLogView.as_view(), name='trip-details'),
+    path('api/users/<int:pk>/mytrips/', api_views.UserTripListView.as_view(), name ='my-trips'), # view'my trips'
+    path('api/users/<int:pk>/<int:trip_pk>/log/', api_views.TripLogView.as_view(), name='trip-log'), # a specific log in a trip
+    path('api/mytrips/<int:trip_pk>/', api_views.TripLogView.as_view(), name='trip-details'), 
     path('api/log/<int:pk>/comment/', api_views.LogCommentView.as_view(), name='log-comments'),
 
 
