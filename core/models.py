@@ -26,7 +26,8 @@ class Trip(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='trips')
     title = models.CharField(max_length=200, default=True)
     location = models.CharField(max_length=150, blank=True)
-    duration = models.CharField(max_length=50, default=True)
+    begin = models.DateField(blank=False,)
+    end = models.DateField(blank=False,)
     
     def start_trip(self):
         return self.logs.filter(start=True).exists()
@@ -44,7 +45,7 @@ class Log(models.Model):
     longitude = models.FloatField('longitude')
     details = models.TextField(max_length=250)
     start = models.BooleanField(default=False)
-
+    date_logged = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.location
 
