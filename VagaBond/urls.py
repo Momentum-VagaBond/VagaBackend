@@ -24,13 +24,11 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
 
-    path('api/profile/<int:user_pk>/', api_views.UsersView.as_view(), name='user-detail'), # user profile
+    # path('api/profile/<int:user_pk>/', api_views.UserProfileView.as_view(), name='user-detail'), # user profile
     path('api/trips/', api_views.TripListView.as_view(), name='trip-list'),# list of all trips, all users (so far)
-    path('api/users/<int:pk>/mytrips/', api_views.UserTripListView.as_view(), name ='my-trips'), # view'my trips'
+    path('api/mytrips/', api_views.UserTripsView.as_view(), name ='user-trips'), # view all trips created by user
     path('api/users/<int:pk>/<int:trip_pk>/log/', api_views.TripLogView.as_view(), name='trip-log'), # a specific log in a trip
-    path('api/mytrips/<int:trip_pk>/', api_views.TripLogView.as_view(), name='trip-details'), 
+    path('api/mytrips/<int:trip_pk>/', api_views.TripDetailView.as_view(), name='trip-details'), # CURRENTLY GETTING ALL LOGS BY USER but looking for specific trips with respective logs
     path('api/log/<int:pk>/comment/', api_views.LogCommentView.as_view(), name='log-comments'),
-
-
 ]
 

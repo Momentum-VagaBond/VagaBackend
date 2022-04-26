@@ -6,6 +6,7 @@ from django.forms import CharField
 from datetime import date
 
 class User(AbstractUser):
+    traveler = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='travelers')
     bio = models.CharField(max_length=300, default=True)
     def __repr__(self):
         return f"<User username={self.username} pk={self.pk}>"

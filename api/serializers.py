@@ -62,13 +62,13 @@ class LogSerializer(serializers.ModelSerializer):
     def start_trip(self, obj):
         return obj.start_trip()
 
+
+
 class LogCommentSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     
-    
     def get_user(self, obj):
         return obj.user.username
-
 
     class Meta:
         model = Comment
@@ -76,5 +76,29 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'user',
             'comments',
             'date_commented',
-            
+        )
+
+
+
+class TripLogSerializer(serializers.ModelSerializer):
+    trip_logs = LogSerializer(many=True, required=False, source='logs')
+    user = serializers.SerializerMethodField()
+    username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
+    user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
+    user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
+
+    def get_user(self, obj):
+        return obj.user.username
+
+    class Meta:
+        model = Trip
+        fields = (
+            'pk',
+            'title',
+            'location',
+            'user',
+            'username',
+            'user_first_name',
+            'user_last_name',
+            'trip_logs'
         )
