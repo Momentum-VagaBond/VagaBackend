@@ -1,4 +1,3 @@
-from turtle import title
 from core.models import User, Contacts, Trip, Log, Comment
 from rest_framework import serializers
 
