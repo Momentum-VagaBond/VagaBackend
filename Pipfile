@@ -15,7 +15,6 @@ djoser = "*"
 django-cors-headers = "*"
 django-on-heroku = "*"
 gunicorn = "*"
-django-bootstrap-datepicker-plus = "*"
 
 [dev-packages]
 

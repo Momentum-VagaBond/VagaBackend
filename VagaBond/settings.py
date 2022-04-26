@@ -143,12 +143,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 REST_FRAMEWORK = {
+    "DATE_INPUT_FORMATS": ['%d-%m-%Y'],
+
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly'
     ],
         'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
-        )
+        ),
 }
 
 
@@ -158,3 +160,4 @@ django_on_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
 
 AUTH_USER_MODEL = 'core.User'
+
