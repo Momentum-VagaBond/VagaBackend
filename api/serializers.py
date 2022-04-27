@@ -58,6 +58,7 @@ class LogSerializer(serializers.ModelSerializer):
             'longitude',
             'details',
             'start',
+            'date_logged'
         )
     def start_trip(self, obj):
         return obj.start_trip()
@@ -116,5 +117,6 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'longitude',
             'details',
             'start',
+            'date_logged',
             'log_comments'
         )
