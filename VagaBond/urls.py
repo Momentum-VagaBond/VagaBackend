@@ -16,13 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from api import views as api_views
-#TEST TEST
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
+    path('api-token-auth/', api_views.CustomAuthToken.as_view()), # custom login for front end to receive userpk at login
 
     path('api/auth/me/', api_views.UserProfileView.as_view(), name='user-detail'), # my profile
     path('api/trips/', api_views.TripListView.as_view(), name='trip-list'),# list of all trips, all users (so far)
