@@ -81,7 +81,7 @@ class LogCommentSerializer(serializers.ModelSerializer):
 
 
 class TripLogSerializer(serializers.ModelSerializer):
-    trip_logs = LogSerializer(many=True, required=False, source='logs')
+    trip_logs = LogSerializer(many=True, required=False)
     user = serializers.SerializerMethodField()
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
