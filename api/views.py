@@ -22,6 +22,12 @@ class TripListView(ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+# Specific user and their trips
+class UserTripsView(ListCreateAPIView):
+    serializer_class = TripSerializer
+    def get_queryset(self):
+        return self.request.user.trips.all()
+        
 # Log an entry on a trip
 class TripLogView(ListCreateAPIView):
     def get_queryset(self):
@@ -32,6 +38,11 @@ class TripLogView(ListCreateAPIView):
         serializer.save(user=self.request.user, trip=trip)
         return Log(serializer.data)
 
+# Trips with associated logs
+class TripDetailView(RetrieveAPIView):
+    queryset = Trip.objects.all()
+    serializer_class = TripLogSerializer
+
 #Comment on a log
 class LogCommentView(ListCreateAPIView):
     queryset = Comment.objects.all()
@@ -40,25 +51,7 @@ class LogCommentView(ListCreateAPIView):
         log = get_object_or_404(Log, pk=self.kwargs["pk"])
         serializer.save(user=self.request.user, log=log)
         
-# Specific user and their trips
-class UserTripsView(ListCreateAPIView):
-    serializer_class = TripSerializer
-    def get_queryset(self):
-        return self.request.user.trips.all()
 
-
-# Trips with associated logs -- this is throwing an error "Expected view TripDetailView to be called with a URL keyword argument named "pk". Fix your URL conf, or set the `.lookup_field` attribute on the view correctly."
-# However, using breakpoint shows what we are wanting to see, which is the ONE trip and logs associated with the user.
-class TripDetailView(RetrieveAPIView):
-    queryset = Trip.objects.all()
-    serializer_class = TripLogSerializer
-
-    # def get_queryset(self):
-    #     return get_object_or_404(Trip, pk=self.kwargs["pk"])
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
 
 
 
