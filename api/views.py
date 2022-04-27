@@ -4,28 +4,23 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import permissions
 from .serializers import LogCommentSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer
-from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.response import Response
 from api import serializers
 
-# List of all trips
+# Profile page
+class UserProfileView(ListAPIView):
+    serializer_class = UserSerializer
+    def get_queryset(self):
+        return self.request.user.travelers.all()
+
+# Create a new trip with POST, List of all trips with GET
 class TripListView(ListCreateAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-
-# User profile
-class UsersView(ListCreateAPIView):
-    serializer_class = UserSerializer
-    queryset = User.objects.filter()
-
-# Specific user's trip list
-class UserTripListView(ListAPIView):
-    serializer_class = TripSerializer
-    def get_queryset(self):
-        return self.request.user.trips.all()
 
 # Log an entry on a trip
 class TripLogView(ListCreateAPIView):
@@ -51,14 +46,23 @@ class UserTripsView(ListCreateAPIView):
     def get_queryset(self):
         return self.request.user.trips.all()
 
-# Profile page
-class UserProfileView(ListAPIView):
-    serializer_class = UserSerializer
-    def get_queryset(self):
-        return self.request.user.travelers.all()
 
-# Trips
-class TripDetailView(ListAPIView):
+# Trips with associated logs -- this is throwing an error "Expected view TripDetailView to be called with a URL keyword argument named "pk". Fix your URL conf, or set the `.lookup_field` attribute on the view correctly."
+# However, using breakpoint shows what we are wanting to see, which is the ONE trip and logs associated with the user.
+class TripDetailView(RetrieveAPIView):
     serializer_class = TripLogSerializer
+    queryset = Trip.objects.all()
     def get_queryset(self):
-        return self.request.user.logs.all()
+        return get_object_or_404(Trip, pk=self.kwargs["trip_pk"])
+
+
+
+
+
+
+
+# # Specific user's trip list
+# class UserTripListView(ListAPIView):
+#     serializer_class = TripSerializer
+#     def get_queryset(self):
+#         return self.request.user.trips.all()

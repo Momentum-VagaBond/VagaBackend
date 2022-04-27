@@ -93,7 +93,7 @@ class TripLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trip
         fields = (
-            'pk',
+            'trip_pk',
             'title',
             'location',
             'user',
