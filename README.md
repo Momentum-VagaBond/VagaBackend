@@ -103,7 +103,7 @@ Response
 }
 ```
 
-### View a list of 'my trips'
+### **View a list of 'my trips'**
 ---
 *be sure that you have a token entered under 'Bearer' with the prefix, 'Token'*
 
@@ -162,7 +162,7 @@ Response
 ]
 ```
 
-### log a travel entry
+### **log a travel entry**
 ---
 *be sure that you have a token entered under 'Bearer' with the prefix, 'Token'*
 
@@ -193,5 +193,60 @@ Response
 	"latitude": 64.1323,
 	"longitude": -21.94179,
 	"details": "just landed safely! Waiting for the rental car...can't wait to check in to the hotel."
+}
+```
+
+### **view all trips of one user and their logs**
+---
+*no authentication required*
+
+Request
+> GET /api/trips/**trip-pk/
+
+JSON
+```
+-----
+```
+
+Response
+> 200 OK
+```
+{
+	"pk": 1,
+	"title": "I need some ME time",
+	"location": "Banff, Alberta, Canada",
+	"user": "emilyflo",
+	"username": "emilyflo",
+	"user_first_name": "Emily",
+	"user_last_name": "Starr",
+	"trip_logs": [
+		{
+			"pk": 1,
+			"user": "emilyflo",
+			"location": "location 1 Canada trip",
+			"latitude": 23.0,
+			"longitude": 32432.0,
+			"details": "this is the details section of Canada trip, log 1",
+			"start": false
+		},
+		{
+			"pk": 2,
+			"user": "emilyflo",
+			"location": "location 2",
+			"latitude": 342.0,
+			"longitude": 23423.0,
+			"details": "details for location 2, canada trip, emily",
+			"start": false
+		},
+		{
+			"pk": 9,
+			"user": "emilyflo",
+			"location": "Pittsburgh Airport",
+			"latitude": 264.45,
+			"longitude": 353.35,
+			"details": "I'm getting antsy to get on this plane!",
+			"start": false
+		}
+	]
 }
 ```
