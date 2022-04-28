@@ -1,20 +1,37 @@
 from core.models import Image, User, Contacts, Trip, Log, Comment
 from rest_framework import serializers
 
-
-
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
     user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
     class Meta:
         model=User
-        fields=(
+        fields = (
             'id',
             'username',
             'user_first_name',
             'user_last_name',
             'bio',
+        )
+
+class ContactsSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    class Meta:
+        model = Contacts
+        fields = (
+            'user',
+            'first_name',
+            'last_name',
+            'email',
+        )
+
+class TripContactsSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    class Meta:
+        model = Contacts
+        fields = (
+            
         )
 
 class TripSerializer(serializers.ModelSerializer):
