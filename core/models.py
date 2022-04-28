@@ -2,8 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from django.forms import CharField
-from datetime import date
+from django.core.mail import send_mail
 
 class User(AbstractUser):
     traveler = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='travelers')
@@ -33,9 +32,17 @@ class Trip(models.Model):
     def start_trip(self):
         return self.logs.filter(start=True).exists()
     
-    
     def __str__(self):
         return self.location
+
+    # def start_trip()
+    #     send_mail(
+    #         'I am going on a trip!',
+    #         'Follow me to {self.location}.',
+    #         'vagabondupdates@gmail.com',
+    #         recipient_list: ['emilyflo.starr@gmail.com']
+    #     )
+
 
 
 class Log(models.Model):
