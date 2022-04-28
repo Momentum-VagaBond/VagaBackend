@@ -1,4 +1,4 @@
-from core.models import User, Contacts, Trip, Log, Comment
+from core.models import Image, User, Contacts, Trip, Log, Comment
 from rest_framework import serializers
 
 
@@ -41,10 +41,21 @@ class TripSerializer(serializers.ModelSerializer):
             #contacts list
         )
 
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = (
+            'picture',
+            'log_images',
+            'user_images',
+            'uploaded_at',
+        )
+
+
 class LogSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     start_trip = serializers.SerializerMethodField()
-
+    log_images = serializers.ImageField(required=False)
     def get_user(self, obj):
         return obj.user.username
 
@@ -58,10 +69,12 @@ class LogSerializer(serializers.ModelSerializer):
             'longitude',
             'details',
             'start',
-            'date_logged'
+            'date_logged',
+            'log_images'
         )
     def start_trip(self, obj):
         return obj.start_trip()
+
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
