@@ -16,6 +16,7 @@ class User(AbstractUser):
         return self.username
 
 
+
 audience = [
     ('friends', 'friends'),
     ('family', 'family'),
@@ -72,9 +73,11 @@ class Log(models.Model):
     details = models.TextField(max_length=250)
     start = models.BooleanField(default=False)
     date_logged = models.DateTimeField(auto_now_add=True)
+
+
+
     def __str__(self):
         return self.location
-
 
 
 class Comment(models.Model):
@@ -85,3 +88,13 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.comments
+
+
+class Image(models.Model):
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    picture = models.ImageField(blank=True, null=True, upload_to='images/')
+    log_image = models.ForeignKey(Log, on_delete=models.CASCADE, related_name='log_images')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_images')
+
+    def __img__(self):
+        return self.picture

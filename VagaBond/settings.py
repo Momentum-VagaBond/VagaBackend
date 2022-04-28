@@ -13,7 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import environ
 import django_on_heroku
-
+import os
+from corsheaders.defaults import default_headers
 
 env = environ.Env(
     # set casting, default value
@@ -34,7 +35,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []# maybe need to add host IP for images
 
 
 # Application definition
@@ -53,7 +54,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'corsheaders',
-    
+    'storages',
     
 ]
 
@@ -133,7 +134,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [BASE_DIR / "/static"]
 STATIC_URL = '/static/'
 
 # Default primary key field type
@@ -156,10 +157,35 @@ REST_FRAMEWORK = {
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'content-disposition',
+]
 django_on_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
 
 AUTH_USER_MODEL = 'core.User'
+
+#this is for using Amazon s3 storage
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'momentum-vagabond'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+###############################
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+=======
 
 # email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -171,3 +197,4 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 # Custom setting. To email
 RECIPIENT_ADDRESS = env('RECIPIENT_ADDRESS')
+
