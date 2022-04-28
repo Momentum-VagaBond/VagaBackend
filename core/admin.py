@@ -5,5 +5,5 @@ admin.site.register(User)
 admin.site.register(Trip)
 admin.site.register(Log)
 admin.site.register(Comment)
-admin.site.register( Contacts)
+admin.site.register(Contacts)
 

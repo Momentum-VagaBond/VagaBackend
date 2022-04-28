@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.core.mail import send_mail
 
+
+
 class User(AbstractUser):
     traveler = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='travelers')
     bio = models.CharField(max_length=300, default=True)
@@ -13,14 +15,25 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+
+audience = [
+    ('friends', 'friends'),
+    ('family', 'family'),
+    ('public', 'public'),
+    ('private', 'private'),
+]
+
 class Contacts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contacts', default=True)
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=30)
     email = models.EmailField(max_length=75)
+    audience = models.CharField(choices=audience, max_length=30, blank=True, null=True)
 
     def __str__(self):
         return self.user
+
+
 
 class Trip(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='trips')
@@ -28,6 +41,7 @@ class Trip(models.Model):
     location = models.CharField(max_length=150, blank=True)
     begin = models.DateField(blank=False,)
     end = models.DateField(blank=False,)
+    followers = models.ManyToManyField(Contacts, related_name='trip_followers')
     
     def start_trip(self):
         return self.logs.filter(start=True).exists()
@@ -35,13 +49,17 @@ class Trip(models.Model):
     def __str__(self):
         return self.location
 
-    # def start_trip()
-    #     send_mail(
-    #         'I am going on a trip!',
-    #         'Follow me to {self.location}.',
-    #         'vagabondupdates@gmail.com',
-    #         recipient_list: ['emilyflo.starr@gmail.com']
-    #     )
+    def mail_trip_followers(self):
+        followers_list = self.followers.all()
+        email_list = []
+        for follower in followers_list:
+            email_list.append(follower.email)
+        send_mail(
+            subject=( f'I\'m going on a trip!'),
+            message=( f'Follow me to {self.location}.'),
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=email_list
+        )
 
 
 
