@@ -30,5 +30,6 @@ urlpatterns = [
     path('api/users/<int:pk>/<int:trip_pk>/log/', api_views.TripLogView.as_view(), name='trip-log'), # a specific log in a trip
     path('api/mytrips/<int:trip_pk>/', api_views.TripDetailView.as_view(), name='trip-details'), # CURRENTLY GETTING ALL LOGS BY USER but looking for specific trips with respective logs
     path('api/log/<int:pk>/comment/', api_views.LogCommentView.as_view(), name='log-comments'),
+    
 ]
 

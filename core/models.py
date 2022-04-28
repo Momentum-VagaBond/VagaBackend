@@ -5,6 +5,7 @@ from django.conf import settings
 from django.forms import CharField
 from datetime import date
 
+
 class User(AbstractUser):
     traveler = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='travelers')
     bio = models.CharField(max_length=300, default=True)
@@ -13,6 +14,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
 
 class Contacts(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='contacts', default=True)
@@ -23,6 +25,7 @@ class Contacts(models.Model):
     def __str__(self):
         return self.user
 
+
 class Trip(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='trips')
     title = models.CharField(max_length=200, default=True)
@@ -32,7 +35,6 @@ class Trip(models.Model):
     
     def start_trip(self):
         return self.logs.filter(start=True).exists()
-    
     
     def __str__(self):
         return self.location
@@ -47,9 +49,11 @@ class Log(models.Model):
     details = models.TextField(max_length=250)
     start = models.BooleanField(default=False)
     date_logged = models.DateTimeField(auto_now_add=True)
+
+
+
     def __str__(self):
         return self.location
-
 
 
 class Comment(models.Model):
@@ -60,3 +64,13 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.comments
+
+
+class Image(models.Model):
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    picture = models.ImageField(blank=True, null=True, upload_to='images/')
+    log_image = models.ForeignKey(Log, on_delete=models.CASCADE, related_name='log_images')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_images')
+
+    def __img__(self):
+        return self.picture

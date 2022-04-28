@@ -1,12 +1,14 @@
 from django.shortcuts import get_object_or_404
-from core.models import User, Trip, Contacts, Log, Comment
+from core.models import User, Trip, Contacts, Log, Comment, Image
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
-from rest_framework import permissions
+from rest_framework import permissions, viewsets
 from .serializers import LogCommentSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
 from rest_framework.response import Response
 from api import serializers
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
 
 # List of all trips
 class TripListView(ListCreateAPIView):
@@ -62,3 +64,15 @@ class TripDetailView(ListAPIView):
     serializer_class = TripLogSerializer
     def get_queryset(self):
         return self.request.user.logs.all()
+
+#for uploading pictures to S3
+class PictureUploadView(CreateView):
+    model = Image 
+    fields = ['upload',]
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        images = Image.objects.all()
+        context['images'] = images
+        return context
