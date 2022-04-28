@@ -92,7 +92,7 @@ class Comment(models.Model):
 
 class Image(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    picture = models.ImageField(blank=True, null=True, upload_to='images/')
+    picture = models.ImageField(blank=True, null=True)
     log_image = models.ForeignKey(Log, on_delete=models.CASCADE, related_name='log_images')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_images')
 
