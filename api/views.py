@@ -66,6 +66,7 @@ class TripDetailView(RetrieveAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripLogSerializer
 
+
 # Log detail page
 class LogDetailView(RetrieveAPIView):
     queryset = Log.objects.all()
