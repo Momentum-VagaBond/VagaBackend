@@ -2,8 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from django.forms import CharField
-from datetime import date
+from django.core.mail import send_mail
 
 
 class User(AbstractUser):
@@ -38,6 +37,15 @@ class Trip(models.Model):
     
     def __str__(self):
         return self.location
+
+    # def start_trip()
+    #     send_mail(
+    #         'I am going on a trip!',
+    #         'Follow me to {self.location}.',
+    #         'vagabondupdates@gmail.com',
+    #         recipient_list: ['emilyflo.starr@gmail.com']
+    #     )
+
 
 
 class Log(models.Model):

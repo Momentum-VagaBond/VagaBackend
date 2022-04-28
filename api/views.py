@@ -3,14 +3,41 @@ from core.models import User, Trip, Contacts, Log, Comment, Image
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import permissions, viewsets
-from .serializers import LogCommentSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer
-from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView
+from .serializers import LogCommentSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
+from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.response import Response
 from api import serializers
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 
-# List of all trips
+# custom login for the front end to get userpk when logging in
+class CustomAuthToken(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'last_login': user.last_login,
+            'email': user.email,
+            'bio': user.bio
+        })
+
+# Profile page
+class UserProfileView(ListAPIView):
+    serializer_class = UserSerializer
+    def get_queryset(self):
+        return self.request.user.travelers.all()
+
+# Create a new trip with POST, List of all trips with GET
 class TripListView(ListCreateAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
@@ -18,13 +45,8 @@ class TripListView(ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-# User profile
-class UsersView(ListCreateAPIView):
-    serializer_class = UserSerializer
-    queryset = User.objects.filter()
-
-# Specific user's trip list
-class UserTripListView(ListAPIView):
+# Specific user and their trips
+class UserTripsView(ListCreateAPIView):
     serializer_class = TripSerializer
     def get_queryset(self):
         return self.request.user.trips.all()
@@ -39,31 +61,23 @@ class TripLogView(ListCreateAPIView):
         serializer.save(user=self.request.user, trip=trip)
         return Log(serializer.data)
 
-#Comment on a log
-class LogCommentView(ListCreateAPIView):
-    queryset = Comment.objects.all()
+# Trips with associated logs
+class TripDetailView(RetrieveAPIView):
+    queryset = Trip.objects.all()
+    serializer_class = TripLogSerializer
+
+# Log detail page
+class LogDetailView(RetrieveAPIView):
+    queryset = Log.objects.all()
     serializer_class = LogCommentSerializer
+
+# Comment on a log
+class CommentView(ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
     def perform_create(self, serializer):
         log = get_object_or_404(Log, pk=self.kwargs["pk"])
         serializer.save(user=self.request.user, log=log)
-        
-# Specific user and their trips
-class UserTripsView(ListCreateAPIView):
-    serializer_class = TripSerializer
-    def get_queryset(self):
-        return self.request.user.trips.all()
-
-# Profile page
-class UserProfileView(ListAPIView):
-    serializer_class = UserSerializer
-    def get_queryset(self):
-        return self.request.user.travelers.all()
-
-# Trips
-class TripDetailView(ListAPIView):
-    serializer_class = TripLogSerializer
-    def get_queryset(self):
-        return self.request.user.logs.all()
 
 #for uploading pictures to S3
 class PictureUploadView(CreateView):
@@ -76,3 +90,14 @@ class PictureUploadView(CreateView):
         images = Image.objects.all()
         context['images'] = images
         return context
+
+
+
+
+
+
+# # Specific user's trip list
+# class UserTripListView(ListAPIView):
+#     serializer_class = TripSerializer
+#     def get_queryset(self):
+#         return self.request.user.trips.all()

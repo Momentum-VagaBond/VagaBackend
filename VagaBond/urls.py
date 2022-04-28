@@ -16,20 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from api import views as api_views
-#TEST TEST
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
+    path('api-token-auth/', api_views.CustomAuthToken.as_view()), # custom login for front end to receive userpk at login
 
-    # path('api/profile/<int:user_pk>/', api_views.UserProfileView.as_view(), name='user-detail'), # user profile
+    path('api/auth/me/', api_views.UserProfileView.as_view(), name='user-detail'), # my profile
     path('api/trips/', api_views.TripListView.as_view(), name='trip-list'),# list of all trips, all users (so far)
-    path('api/mytrips/', api_views.UserTripsView.as_view(), name ='user-trips'), # view all trips created by user
-    path('api/users/<int:pk>/<int:trip_pk>/log/', api_views.TripLogView.as_view(), name='trip-log'), # a specific log in a trip
-    path('api/mytrips/<int:trip_pk>/', api_views.TripDetailView.as_view(), name='trip-details'), # CURRENTLY GETTING ALL LOGS BY USER but looking for specific trips with respective logs
-    path('api/log/<int:pk>/comment/', api_views.LogCommentView.as_view(), name='log-comments'),
-    
+    path('api/mytrips/', api_views.UserTripsView.as_view(), name ='user-trips'), # view all trips created by user or create trips
+    path('api/users/<int:pk>/<int:trip_pk>/log/', api_views.TripLogView.as_view(), name='trip-log'), # create a specific log in a trip
+    path('api/trips/<int:pk>/', api_views.TripDetailView.as_view(), name='trip-details'), # specific trips with respective logs
+    path('api/trips/<int:pk>/log/<int:log_pk>/', api_views.LogDetailView.as_view(), name='log-details'),
+    path('api/log/<int:pk>/comment/', api_views.CommentView.as_view(), name='log-comments'),
 ]
 
