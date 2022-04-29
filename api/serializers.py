@@ -1,3 +1,4 @@
+from operator import ge
 from core.models import Image, User, Contacts, Trip, Log, Comment
 from rest_framework import serializers
 
@@ -5,6 +6,11 @@ class UserSerializer(serializers.ModelSerializer):
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
     user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
+    trips = serializers.SerializerMethodField
+
+    def get_trips(self, obj):
+        return obj.user.trips.title
+
     class Meta:
         model=User
         fields = (
@@ -13,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
             'user_first_name',
             'user_last_name',
             'bio',
+            'trips',
         )
 
 class ContactsSerializer(serializers.ModelSerializer):
