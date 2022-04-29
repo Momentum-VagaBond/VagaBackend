@@ -27,13 +27,15 @@ class CustomAuthToken(ObtainAuthToken):
             'user_id': user.pk,
             'first_name': user.first_name,
             'last_name': user.last_name,
+            'username': user.username,
             'last_login': user.last_login,
             'email': user.email,
             'bio': user.bio
         })
 
-# class CustomRegistrationView(DjoserUserViewSet):
-
+# class CustomRegistrationView(RegistrationView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
 
 # Profile page
 class UserProfileView(ListAPIView):

@@ -146,7 +146,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 REST_FRAMEWORK = {
-    "DATE_INPUT_FORMATS": ['%d-%m-%Y'],
+    "DATE_INPUT_FORMATS": ['%m-%d-%Y'],
 
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly'
@@ -156,6 +156,11 @@ REST_FRAMEWORK = {
         ),
 }
 
+DJOSER = {
+    'SERIALIZERS': {
+        'user_registration': 'account.serializers.UserSerializer',
+    }
+}
 
 CORS_ALLOW_ALL_ORIGINS = True
 
