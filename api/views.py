@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from api import serializers
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+# from djoser.views import UserViewSet as DjoserUserViewSet
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 
@@ -30,6 +31,9 @@ class CustomAuthToken(ObtainAuthToken):
             'email': user.email,
             'bio': user.bio
         })
+
+# class CustomRegistrationView(DjoserUserViewSet):
+
 
 # Profile page
 class UserProfileView(ListAPIView):

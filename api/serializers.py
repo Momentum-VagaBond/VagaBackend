@@ -13,6 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
             'user_first_name',
             'user_last_name',
             'bio',
+            'avatar',
         )
 
 class ContactsSerializer(serializers.ModelSerializer):
