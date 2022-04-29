@@ -104,14 +104,23 @@ class LogSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
-    
+    username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
+    user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
+    user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
+
     def get_user(self, obj):
         return obj.user.username
+
+    def get_user_comments(self, obj):
+        return obj.user_comments
 
     class Meta:
         model = Comment
         fields = (
             'user',
+            'username',
+            'user_first_name',
+            'user_last_name',
             'comments',
             'date_commented',
         )
