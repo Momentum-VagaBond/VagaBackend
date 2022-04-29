@@ -34,7 +34,7 @@ class Contacts(models.Model):
     audience = models.CharField(choices=audience, max_length=30, blank=True, null=True)
 
     def __str__(self):
-        return self.user
+        return self.first_name
 
 
 
