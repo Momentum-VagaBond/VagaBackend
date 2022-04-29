@@ -19,7 +19,9 @@ class UserSerializer(serializers.ModelSerializer):
             'user_first_name',
             'user_last_name',
             'bio',
+            'avatar',
             'trips',
+
         )
 
 class ContactsSerializer(serializers.ModelSerializer):
@@ -153,6 +155,7 @@ class TripLogSerializer(serializers.ModelSerializer):
         return LogSerializer(trip_logs, many=True).data
 
 class LogCommentSerializer(serializers.ModelSerializer):
+    log_images = serializers.ImageField(required=False)
     log_comments = CommentSerializer(many=True, required=False)
     user = serializers.SerializerMethodField()
 
@@ -170,5 +173,6 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'details',
             'start',
             'date_logged',
-            'log_comments'
+            'log_comments',
+            'log_images'
         )
