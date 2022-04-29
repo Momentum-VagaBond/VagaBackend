@@ -30,7 +30,7 @@ urlpatterns = [
     path('api/mytrips/', api_views.UserTripsView.as_view(), name ='user-trips'), # view all trips created by user or create trips
     path('api/users/<int:pk>/<int:trip_pk>/log/', api_views.TripLogView.as_view(), name='trip-log'), # create a specific log in a trip
     path('api/trips/<int:pk>/', api_views.TripDetailView.as_view(), name='trip-details'), # specific trips with respective logs
-    path('api/trips/<int:pk>/log/<int:log_pk>/', api_views.LogDetailView.as_view(), name='log-details'),
+    path('api/log/<int:pk>/', api_views.LogDetailView.as_view(), name='log-details'),
     path('api/log/<int:pk>/comment/', api_views.CommentView.as_view(), name='log-comments'),
 ]
 
