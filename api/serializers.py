@@ -28,6 +28,7 @@ class ContactsSerializer(serializers.ModelSerializer):
             'email',
         )
 
+
 class TripContactsSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     class Meta:
@@ -36,11 +37,13 @@ class TripContactsSerializer(serializers.ModelSerializer):
             
         )
 
+
 class TripSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
     user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
+    trip_logs = serializers.SerializerMethodField()
 
     def get_user(self, obj):
         return obj.user.username
@@ -57,8 +60,9 @@ class TripSerializer(serializers.ModelSerializer):
             'username',
             'user_first_name',
             'user_last_name',
-            #contacts list
+            'trip_logs'
         )
+
 
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -89,12 +93,11 @@ class LogSerializer(serializers.ModelSerializer):
             'details',
             'start',
             'date_logged',
+            'reactions',
             'log_images',
         )
     def start_trip(self, obj):
         return obj.start_trip()
-
-
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -118,8 +121,8 @@ class CommentSerializer(serializers.ModelSerializer):
             'user_last_name',
             'comments',
             'date_commented',
-            'reactions',
         )
+
 
 class TripLogSerializer(serializers.ModelSerializer):
     trip_logs = serializers.SerializerMethodField()
@@ -148,6 +151,7 @@ class TripLogSerializer(serializers.ModelSerializer):
         trip_logs = instance.trip_logs.order_by('-pk')
         return LogSerializer(trip_logs, many=True).data
 
+
 class LogCommentSerializer(serializers.ModelSerializer):
     log_images = serializers.ImageField(required=False)
     log_comments = CommentSerializer(many=True, required=False)
@@ -167,6 +171,7 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'details',
             'start',
             'date_logged',
+            'reactions',
             'log_comments',
             'log_images'
         )

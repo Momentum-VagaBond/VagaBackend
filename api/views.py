@@ -62,7 +62,7 @@ class UserTripsView(ListCreateAPIView):
 class TripLogView(ListCreateAPIView):
     def get_queryset(self):
         return self.request.user.trips.all()
-    serializer_class = TripSerializer
+    serializer_class = LogSerializer
     def perform_create(self, serializer):
         trip = get_object_or_404(Trip, pk=self.kwargs["pk"])
         serializer.save(user=self.request.user, trip=trip)
