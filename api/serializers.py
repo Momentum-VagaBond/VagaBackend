@@ -89,7 +89,7 @@ class LogSerializer(serializers.ModelSerializer):
             'details',
             'start',
             'date_logged',
-            'log_images'
+            'log_images',
         )
     def start_trip(self, obj):
         return obj.start_trip()
@@ -118,6 +118,7 @@ class CommentSerializer(serializers.ModelSerializer):
             'user_last_name',
             'comments',
             'date_commented',
+            'reactions',
         )
 
 class TripLogSerializer(serializers.ModelSerializer):
