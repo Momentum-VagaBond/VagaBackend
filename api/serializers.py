@@ -43,7 +43,6 @@ class TripSerializer(serializers.ModelSerializer):
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
     user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
-    trip_logs = serializers.SerializerMethodField()
 
     def get_user(self, obj):
         return obj.user.username
@@ -60,7 +59,6 @@ class TripSerializer(serializers.ModelSerializer):
             'username',
             'user_first_name',
             'user_last_name',
-            'trip_logs'
         )
 
 
