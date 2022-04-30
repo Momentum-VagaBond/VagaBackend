@@ -74,7 +74,7 @@ reactions = [
 class Log(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='trip_logs')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='logs', default=True)
-    location = models.CharField(max_length=75)
+    location = models.CharField(max_length=75, blank=True)
     latitude = models.FloatField('latitude', blank=True, null=True)
     longitude = models.FloatField('longitude', blank=True, null=True)
     details = models.TextField(max_length=250)
