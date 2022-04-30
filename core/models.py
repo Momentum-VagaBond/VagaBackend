@@ -86,7 +86,7 @@ class Log(models.Model):
         return self.location
 
     def save(self, *args, **kwargs):
-        g = geocoder.mapbox(self.location, key=mapbox_token, method='reverse')
+        g = geocoder.mapbox(self.location, key=mapbox_token)
         g = g.latlng
         self.latitude = g[0]
         self.longitude = g[1]
