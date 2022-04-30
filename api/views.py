@@ -43,6 +43,7 @@ class UserProfileView(ListAPIView):
     def get_queryset(self):
         return self.request.user.travelers.all()
 
+
 # Create a new trip with POST, List of all trips with GET
 class TripListView(ListCreateAPIView):
     queryset = Trip.objects.all()
