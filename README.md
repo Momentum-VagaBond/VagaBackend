@@ -83,7 +83,8 @@ Request
 {
 	    "title": "I'm going on a Viking adventure!",
 	    "location": "Iceland",
-	    "duration": "2 weeks"
+	    "begin": "06-21-2022",
+	    "end": "07-01-2022"
 }
 ```
 
@@ -95,7 +96,8 @@ Response
 	"pk": 2,
 	"title": "I'm going on a Viking adventure!",
 	"location": "Iceland",
-	"duration": "2 weeks",
+	"begin": "2022-06-21",
+	"end": "2022-07-01",
 	"user": "nomad",
 	"username": "nomad",
 	"user_first_name": "Willem",
@@ -109,7 +111,7 @@ Response
 
 Request
 
-> GET /api/users/**user-pk**/mytrips
+> GET /api/mytrips/
 
 **No JSON input**
 
