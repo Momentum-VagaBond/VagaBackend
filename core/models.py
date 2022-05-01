@@ -95,6 +95,17 @@ class Log(models.Model):
     #     g = geocoder.mapbox(self.location, key=mapbox_token, method='reverse')
     #     g = g.latlng
     #     self.latitude = 
+    def trip_update(self):
+        followers_list = self.followers.all()
+        email_list = []
+        for follower in followers_list:
+            email_list.append(follower.email)
+        send_mail(
+            subject=( f'Trip update!'),
+            message=( f'Here I am.'),
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=settings.RECIPIENT_ADDRESS
+        )
 
 class Comment(models.Model):
     log = models.ForeignKey(Log, on_delete=models.CASCADE, related_name='log_comments')

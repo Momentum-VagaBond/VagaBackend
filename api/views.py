@@ -9,9 +9,12 @@ from rest_framework.response import Response
 from api import serializers
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from django.shortcuts import render
+from django.core.mail import send_mail
 # from djoser.views import UserViewSet as DjoserUserViewSet
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
+from django.conf import settings
 
 # custom login for the front end to get userpk when logging in
 class CustomAuthToken(ObtainAuthToken):
@@ -67,6 +70,7 @@ class TripLogView(ListCreateAPIView):
         trip = get_object_or_404(Trip, pk=self.kwargs["pk"])
         serializer.save(user=self.request.user, trip=trip)
         return Log(serializer.data)
+    # if log saved, send email
 
 # Trips with associated logs
 class TripDetailView(RetrieveAPIView):
