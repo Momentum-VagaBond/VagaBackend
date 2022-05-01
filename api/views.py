@@ -3,7 +3,7 @@ from core.models import User, Trip, Contacts, Log, Comment, Image
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import permissions, viewsets
-from .serializers import LogCommentSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
+from .serializers import LogCommentSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer, UserProfileSerializer
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.response import Response
 from api import serializers
@@ -39,9 +39,9 @@ class CustomAuthToken(ObtainAuthToken):
 
 # Profile page
 class UserProfileView(ListAPIView):
-    serializer_class = UserSerializer
+    serializer_class = TripSerializer
     def get_queryset(self):
-        return self.request.user.travelers.all()
+        return self.request.user.trips.all()
 
 
 # Create a new trip with POST, List of all trips with GET

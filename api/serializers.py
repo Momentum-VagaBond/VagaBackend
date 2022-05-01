@@ -62,6 +62,25 @@ class TripSerializer(serializers.ModelSerializer):
         )
 
 
+class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
+    trips = serializers.HyperlinkedIdentityField(view_name='my-profile', format='html')
+
+    def get_user(self, obj):
+        return obj.user.objects.trips
+
+    class Meta:
+        model=User
+        fields = (
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'avatar',
+            'bio',
+            'trips',
+        )
+
+
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
