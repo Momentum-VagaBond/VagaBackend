@@ -91,6 +91,10 @@ class Log(models.Model):
         self.latitude = g[0]
         self.longitude = g[1]
         return super(Log, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     g = geocoder.mapbox(self.location, key=mapbox_token, method='reverse')
+    #     g = g.latlng
+    #     self.latitude = 
 
 class Comment(models.Model):
     log = models.ForeignKey(Log, on_delete=models.CASCADE, related_name='log_comments')
