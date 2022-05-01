@@ -62,6 +62,24 @@ class TripSerializer(serializers.ModelSerializer):
         )
 
 
+class ProfileSerializer(serializers.ModelSerializer):
+    trips = serializers.SerializerMethodField
+    user = serializers.SerializerMethodField
+
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'user',
+            'username',
+            'first_name',
+            'last_name',
+            'avatar',
+            'bio',
+            'trips',
+        )
+
+
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
