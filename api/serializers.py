@@ -1,20 +1,8 @@
+from django.forms import CharField
 from core.models import Image, User, Contacts, Trip, Log, Comment
 from rest_framework import serializers
 
-class UserSerializer(serializers.ModelSerializer):
-    trips = serializers.SerializerMethodField
 
-    class Meta:
-        model=User
-        fields = (
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'avatar',
-            'bio',
-            'trips',
-        )
 
 
 class ContactsSerializer(serializers.ModelSerializer):
@@ -43,7 +31,7 @@ class TripSerializer(serializers.ModelSerializer):
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
     user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
-
+    
     def get_user(self, obj):
         return obj.user.username
 
@@ -61,16 +49,13 @@ class TripSerializer(serializers.ModelSerializer):
             'user_last_name',
         )
 
-
-class ProfileSerializer(serializers.ModelSerializer):
-    trips = serializers.SerializerMethodField
-    user = serializers.SerializerMethodField
-
+class UserSerializer(serializers.ModelSerializer):
+    trips = TripSerializer(many=True, read_only=True)
+    
     class Meta:
-        model = User
+        model=User
         fields = (
             'id',
-            'user',
             'username',
             'first_name',
             'last_name',
@@ -78,6 +63,25 @@ class ProfileSerializer(serializers.ModelSerializer):
             'bio',
             'trips',
         )
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class TripProfileSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Trip
+    trip = TripProfileSerializer()
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def create(self, validated_data ):
+        trip_data = validated_data.pop('trip')
+        user_instance = User.objects.create(**validated_data)
+        Trip.objects.create(bio=user_instance,
+                            title=CharField,
+                            avatar=user_instance.avatar,
+                            **trip_data
+        )
+        return user_instance
 
 
 class ImageSerializer(serializers.ModelSerializer):

@@ -3,7 +3,7 @@ from core.models import User, Trip, Contacts, Log, Comment, Image
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import permissions, viewsets
-from .serializers import LogCommentSerializer, ProfileSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
+from .serializers import LogCommentSerializer,ProfileSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from api import serializers
@@ -38,15 +38,11 @@ class CustomAuthToken(ObtainAuthToken):
 #     serializer_class = UserSerializer
 
 # Profile page
-class UserProfileView(RetrieveUpdateDestroyAPIView):
-    def get_queryset(self):
-        return self.request.user.objects.all()
+class UserProfileView(RetrieveAPIView):
+    queryset = User.objects.all()
     serializer_class = UserSerializer
-    def perform_create(self, serializer):
-        user = get_object_or_404(User, pk=self.kwargs["pk"])
-        serializer.save(user=self.request.user)
-        return Trip(serializer.data)
-
+    def get_object(self):
+        return self.request.user
 
 # Create a new trip with POST, List of all trips with GET
 class TripListView(ListCreateAPIView):
