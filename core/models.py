@@ -38,8 +38,8 @@ class Trip(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='trips')
     title = models.CharField(max_length=200, default=True)
     location = models.CharField(max_length=150, blank=True)
-    begin = models.DateField(blank=False,)
-    end = models.DateField(blank=False,)
+    begin = models.DateTimeField(blank=False, input_formats=["%d-%m-%Y-T%H:%M"])
+    end = models.DateField(blank=False, input_formats=["%d-%m-%Y-T%H:%M"])
     followers = models.ManyToManyField(Contacts, related_name='trip_followers')
     
     def start_trip(self):
