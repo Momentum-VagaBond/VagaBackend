@@ -13,7 +13,9 @@ from rest_framework.authtoken.models import Token
 # from djoser.views import UserViewSet as DjoserUserViewSet
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-
+from django.conf import settings
+from django.core.mail import send_mail
+from django.shortcuts import render
 
 # custom login for the front end to get userpk when logging in
 class CustomAuthToken(ObtainAuthToken):
@@ -69,6 +71,15 @@ class TripLogView(ListCreateAPIView):
         trip = get_object_or_404(Trip, pk=self.kwargs["pk"])
         serializer.save(user=self.request.user, trip=trip)
         return Log(serializer.data)
+
+
+    def mail_trip_followers(request):
+        send_mail(
+            'Hello','Body', settings.EMAIL_HOST_USER,
+            [settings.RECIPIENT_ADDRESS],
+        )
+        return render(request, 'mail/log.html')
+
 
 # Trips with associated logs
 class TripDetailView(RetrieveAPIView):
