@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from rest_framework import permissions, viewsets
 from .serializers import LogCommentSerializer,ProfileSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
+# from registration.backends.default.views import RegistrationView
 from rest_framework.response import Response
 from api import serializers
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -12,6 +13,7 @@ from rest_framework.authtoken.models import Token
 # from djoser.views import UserViewSet as DjoserUserViewSet
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
+
 
 # custom login for the front end to get userpk when logging in
 class CustomAuthToken(ObtainAuthToken):

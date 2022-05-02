@@ -2,12 +2,13 @@
 import geocoder
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.base_user import BaseUserManager
 from django.conf import settings
 from django.core.mail import send_mail
 
 class User(AbstractUser):
     traveler = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='travelers')
-    bio = models.CharField(max_length=300, default=True)
+    bio = models.CharField(max_length=300, default='User has yet to fill in their bio')
     avatar = models.ImageField(blank=True, null=True)
 
     def __repr__(self):
@@ -15,6 +16,28 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+class UserManager(BaseUserManager):
+    user_in_migrations = True
+
+    def create_user(self, username, email, password, bio, avatar, first_name, last_name, **extra_fields):
+        # if not username:
+        #     raise ValueError('username required.')
+        if first_name is None:
+            raise ValueError('surely you have a first name')
+        # email = self.normalize_email(email)
+        # username = self.model.normalize_username(username)
+        # first_name = self.model(first_name)
+        last_name = self.model(last_name)
+        bio = self.model(bio)
+        avatar = self.model(avatar)
+        user = self.model(username=username, email=self.normalize_email(email), first_name = self.model(first_name), **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        REQUIRED_FIELDS = ['username', 'password', 'email', 'first_name']
+        return user
+
 
 audience = [
     ('friends', 'friends'),
