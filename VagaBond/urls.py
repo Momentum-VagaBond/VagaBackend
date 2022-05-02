@@ -24,7 +24,8 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('api-token-auth/', api_views.CustomAuthToken.as_view()), # custom login for front end to receive userpk at login
-    # path('auth/register/', api_views.CustomRegistrationView.as_view()),
+    path('auth/register/', api_views.CustomRegistrationView),
+    # path('api-auth/',include('rest_framework.urls', namespace='rest_framework'))
 
     path('api/auth/me', api_views.UserProfileView.as_view(), name='user-detail'), # my profile
     path('api/trips/', api_views.TripListView.as_view(), name='trip-list'),# list of all trips, all users (so far)

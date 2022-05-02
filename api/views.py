@@ -33,9 +33,9 @@ class CustomAuthToken(ObtainAuthToken):
             'bio': user.bio
         })
 
-# class CustomRegistrationView(RegistrationView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
+class CustomRegistrationView(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 # Profile page
 class UserProfileView(RetrieveAPIView):
@@ -67,6 +67,7 @@ class TripLogView(ListCreateAPIView):
         trip = get_object_or_404(Trip, pk=self.kwargs["pk"])
         serializer.save(user=self.request.user, trip=trip)
         return Log(serializer.data)
+    
 
 # Trips with associated logs
 class TripDetailView(RetrieveAPIView):

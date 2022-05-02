@@ -99,12 +99,14 @@ class LogSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     start_trip = serializers.SerializerMethodField()
     log_images = serializers.ImageField(required=False)
+    trip_id = serializers.SlugRelatedField(slug_field='trip_id', read_only='True', source='log')
     def get_user(self, obj):
         return obj.user.username
 
     class Meta:
         model = Log
         fields = (
+            'trip_id',
             'pk',
             'user',
             'location',
@@ -150,6 +152,8 @@ class TripLogSerializer(serializers.ModelSerializer):
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
     user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
+    trip_id = serializers.SlugRelatedField(slug_field='trip_id', read_only='True', source='log')
+
 
     def get_user(self, obj):
         return obj.user.username
@@ -164,7 +168,8 @@ class TripLogSerializer(serializers.ModelSerializer):
             'username',
             'user_first_name',
             'user_last_name',
-            'trip_logs'
+            'trip_logs',
+            'trip_id'
         )
 
     def get_trip_logs(self, instance):

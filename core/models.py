@@ -6,6 +6,8 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 class User(AbstractUser):
+    first_name = models.CharField(max_length=30, blank=False),
+    last_name = models.CharField(max_length=50, blank=False),
     traveler = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='travelers')
     bio = models.CharField(max_length=300, default=True)
     avatar = models.ImageField(blank=True, null=True)
@@ -15,6 +17,10 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+# class UserManager()
+
 
 audience = [
     ('friends', 'friends'),
