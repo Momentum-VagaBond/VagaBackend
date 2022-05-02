@@ -2,12 +2,20 @@
 import geocoder
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.base_user import BaseUserManager
 from django.conf import settings
 from django.core.mail import send_mail
 
 class User(AbstractUser):
+
+    USER_CREATED_PASSWORD_RETYPE = True
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
+
+    first_name = models.CharField(max_length=30, blank=False)
+    last_name = models.CharField(max_length=50, blank=False)
     traveler = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='travelers')
-    bio = models.CharField(max_length=300, default=True)
+    bio = models.CharField(max_length=300, default='User has yet to fill in their bio')
     avatar = models.ImageField(blank=True, null=True)
 
     def __repr__(self):
@@ -15,6 +23,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
 
 audience = [
     ('friends', 'friends'),
