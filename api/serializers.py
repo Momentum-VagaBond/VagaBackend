@@ -43,6 +43,7 @@ class TripSerializer(serializers.ModelSerializer):
             'location',
             'begin',
             'end',
+            'subscribers',
             'user',
             'username',
             'user_first_name',
@@ -106,6 +107,7 @@ class LogSerializer(serializers.ModelSerializer):
         fields = (
             'pk',
             'user',
+            'title',
             'location',
             'latitude',
             'longitude',
@@ -161,6 +163,7 @@ class TripLogSerializer(serializers.ModelSerializer):
             'username',
             'user_first_name',
             'user_last_name',
+            'subscribers',
             'trip_logs'
         )
 
@@ -183,6 +186,7 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'pk',
             'user',
             'location',
+            'title',
             'latitude',
             'longitude',
             'details',
@@ -190,4 +194,19 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'reactions',
             'log_comments',
             'log_images'
+        )
+
+
+class SubscribeSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Trip
+        fields = (
+            'user',
+            'title',
+            'location',
+            'begin',
+            'end',
+            'subscribers'
         )
