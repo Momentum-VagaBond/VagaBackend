@@ -97,7 +97,6 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class LogSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
-    start_trip = serializers.SerializerMethodField()
     log_images = serializers.ImageField(required=False)
     def get_user(self, obj):
         return obj.user.username
@@ -111,13 +110,11 @@ class LogSerializer(serializers.ModelSerializer):
             'latitude',
             'longitude',
             'details',
-            'start',
             'date_logged',
             'reactions',
             'log_images',
         )
-    def start_trip(self, obj):
-        return obj.start_trip()
+
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -189,7 +186,6 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'latitude',
             'longitude',
             'details',
-            'start',
             'date_logged',
             'reactions',
             'log_comments',
