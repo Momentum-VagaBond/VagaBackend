@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404
-from core.models import User, Trip, Contacts, Log, Comment, Image
+from core.models import User, Trip, Contacts, Log, Comment, Image, Follow
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import permissions, viewsets
-from .serializers import LogCommentSerializer,ProfileSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
+from .serializers import LogCommentSerializer,ProfileSerializer, FollowerSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from api import serializers
@@ -148,3 +148,15 @@ class PastActiveView(ListCreateAPIView):
 #     def get_queryset(self):
 #         user = self.request.following
 #         return Trip.objects.filter(end__lte=now().date(), user=user)
+
+
+class FollowerSerializerView(ListAPIView):
+    queryset = Follow.objects.all()
+    serializer_class = FollowerSerializer
+    
+    def get_object(self,):
+        queryset = self.filter_queryset(self.get_queryset())
+        lookup_url_kwarg = self.lookup_url_kwarg
+        # filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+        obj = get_object_or_404(queryset, )
+        return obj

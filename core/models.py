@@ -42,6 +42,13 @@ class Contacts(models.Model):
     def __str__(self):
         return self.first_name
 
+class Follow(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+    following = models.ManyToManyField(User, related_name='following_user', blank=True)
+
+    def __str__(self):
+        return self.user.username
+
 
 class Trip(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='trips')

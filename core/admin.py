@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Trip, Log, Comment, Contacts, Image
+from .models import User, Trip, Log, Comment, Contacts, Image, Follow
 
 
 admin.site.register(User)
@@ -8,3 +8,4 @@ admin.site.register(Log)
 admin.site.register(Comment)
 admin.site.register(Contacts)
 admin.site.register(Image)
+admin.site.register(Follow)

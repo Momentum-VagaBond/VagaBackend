@@ -1,5 +1,5 @@
 from django.forms import CharField
-from core.models import Image, User, Contacts, Trip, Log, Comment
+from core.models import Image, User, Contacts, Trip, Log, Comment, Follow
 from rest_framework import serializers
 
 
@@ -191,3 +191,18 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'log_comments',
             'log_images'
         )
+
+
+class FollowerSerializer(serializers.ModelSerializer):
+    user = UserSerializer(many=False)
+    follower = serializers.SerializerMethodField()
+    class Meta:
+        model = Follow
+        fields = ('user','follower')
+
+    def get_follower(self, obj):
+        context = self.context
+        request = context.get("request")
+        qs = request.user.following_user.all()
+        data = [{'id': obj.pk, 'user_id': obj.user_id, 'first_name': obj.req_field} for obj in qs]
+        return data
