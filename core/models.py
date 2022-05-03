@@ -51,9 +51,6 @@ class Trip(models.Model):
     end = models.DateTimeField(blank=False,)
     followers = models.ManyToManyField(Contacts, related_name='trip_followers')
     
-    def start_trip(self):
-        return self.logs.filter(start=True).exists()
-    
     def __str__(self):
         return self.location
 
@@ -87,7 +84,6 @@ class Log(models.Model):
     latitude = models.FloatField('latitude', blank=True, null=True)
     longitude = models.FloatField('longitude', blank=True, null=True)
     details = models.TextField(max_length=250)
-    start = models.BooleanField(default=False)
     date_logged = models.DateTimeField(auto_now_add=True)
     reactions = models.CharField(choices=reactions, max_length=20, blank=True)
 

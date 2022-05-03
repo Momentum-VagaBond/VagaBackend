@@ -107,7 +107,7 @@ class CurrentActiveView(ListCreateAPIView):
     serializer_class = TripSerializer
     def get_queryset(self):
         user = self.request.user
-        return Trip.objects.filter(end__gt=now().date(), begin__lte=now().date(),user=user)
+        return Trip.objects.filter(end__gt=now().date(), begin__lte=now().date(), user=user)
 
 # Future trips for a logged in user
 class FutureActiveView(ListCreateAPIView):
@@ -124,3 +124,27 @@ class PastActiveView(ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         return Trip.objects.filter(end__lte=now().date(), user=user)
+
+# Current trip for users 'im' following
+# class CurrentFollowingView(ListCreateAPIView):
+#     queryset = Trip.objects.all()
+#     serializer_class = TripSerializer
+#     def get_queryset(self):
+#         user = self.request.following
+#         return Trip.objects.filter(end__gt=now().date(), begin__lte=now().date(), user=user)
+
+# Future trips for users 'im' following
+# class FutureFollowingView(ListCreateAPIView):
+#     queryset = Trip.objects.all()
+#     serializer_class = TripSerializer
+#     def get_queryset(self):
+#         user = self.request.following
+#         return Trip.objects.filter(begin__gte=now().date(), user=user)
+
+# Past trips for users 'im' following
+# class PastFollowingView(ListCreateAPIView):
+#     queryset = Trip.objects.all()
+#     serializer_class = TripSerializer
+#     def get_queryset(self):
+#         user = self.request.following
+#         return Trip.objects.filter(end__lte=now().date(), user=user)
