@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import permissions, viewsets
 from .serializers import LogCommentSerializer,ProfileSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
-from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from api import serializers
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -17,7 +17,8 @@ from django.core.mail import send_mail
 from django.shortcuts import render
 from django.utils.timezone import now
 from django.template.loader import render_to_string
-
+from rest_framework.parsers import FileUploadParser, JSONParser
+from rest_framework.exceptions import PermissionDenied
 
 
 # custom login for the front end to get userpk when logging in
@@ -109,16 +110,40 @@ class CommentView(ListCreateAPIView):
         serializer.save(user=self.request.user, log=log)
 
 # Upload pictures to S3
-class PictureUploadView(CreateView):
-    model = Image 
-    fields = ['upload',]
-    success_url = reverse_lazy('home')
+class PictureUploadView(CreateAPIView):
+    parser_classes = [FileUploadParser, JSONParser]
+    queryset = Log.objects.all()
+    serializer_class = LogSerializer
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        images = Image.objects.all()
-        context['images'] = images
-        return context
+    def save_file_attachment(self, file):
+        log = self.get_object()
+        log.photo.save(file.name, file, save=True)
+
+    def perform_create(self, serializer):
+        if 'file' in self.request.data:
+            self.save_file_attachment(self.request.data["file"])
+        super().perform_update(serializer)
+
+    def get_object(self):
+        log_instance = get_object_or_404(self.get_queryser(), pk=self.kwargs["id"])
+        if self.request.log is not log_instance:
+            raise PermissionDenied()
+        return log_instance
+
+
+
+    # model = Image 
+    # fields = ['upload',]
+    # success_url = reverse_lazy('home')
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     images = Image.objects.all()
+    #     context['images'] = images
+    #     return context
+
+
+
 
 # Current active trip for logged in user
 class CurrentActiveView(ListCreateAPIView):
