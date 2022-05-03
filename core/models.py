@@ -53,17 +53,6 @@ class Trip(models.Model):
         return self.location
 
 
-    def mail_trip_subscribers(self):
-        subscribers_list = self.followers.all()
-        email_list = []
-        for subscriber in subscribers_list:
-            email_list.append(subscriber.email)
-        send_mail(
-            subject=( f'I\'m going on a trip!'),
-            message=( f'Follow me to {self.location}.'),
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=email_list
-        )
 
 mapbox_token = 'pk.eyJ1IjoiZW1pbHlmbG8iLCJhIjoiY2wyZGRsNG9hMHk0aDNicGR1bjhxZGZmdyJ9.OwfzAfjxswxUss6pTmNVUQ'
 

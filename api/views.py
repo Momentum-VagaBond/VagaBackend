@@ -12,7 +12,12 @@ from rest_framework.authtoken.models import Token
 # from djoser.views import UserViewSet as DjoserUserViewSet
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
+from django.conf import settings
+from django.core.mail import send_mail
+from django.shortcuts import render
 from django.utils.timezone import now
+from django.template.loader import render_to_string
+
 
 
 # custom login for the front end to get userpk when logging in [POST]
@@ -100,7 +105,19 @@ class TripLogView(ListCreateAPIView):
     def perform_create(self, serializer):
         trip = get_object_or_404(Trip, pk=self.kwargs["pk"])
         serializer.save(user=self.request.user, trip=trip)
-        return Log(serializer.data)
+        self.mail_trip_followers()
+        
+
+
+    def mail_trip_followers(self):
+        send_mail( 
+            'Hello',
+            'Body', 
+            settings.EMAIL_HOST_USER,
+            [settings.RECIPIENT_ADDRESS],
+            html_message = render_to_string('mail/log.html', {'greeting':'hello from kpt'})
+        )
+        
 
 
 # Trips with associated logs [GET]
