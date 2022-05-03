@@ -24,14 +24,13 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('api-token-auth/', api_views.CustomAuthToken.as_view()), # custom login for front end to receive userpk at login
-    # path('auth/register/', api_views.CustomRegistrationView.as_view()),
-
     path('api/auth/me', api_views.UserProfileView.as_view(), name='user-detail'), # my profile
     path('api/trips/', api_views.TripListView.as_view(), name='trip-list'),# list of all trips, all users (so far)
     path('api/mytrips/', api_views.UserTripsView.as_view(), name ='user-trips'), # view all trips created by user or create trips
     path('api/users/<int:pk>/<int:trip_pk>/log/', api_views.TripLogView.as_view(), name='trip-log'), # create a specific log in a trip
     path('api/trips/<int:pk>/', api_views.TripDetailView.as_view(), name='trip-details'), # specific trips with respective logs
-    path('api/log/<int:pk>/', api_views.LogDetailView.as_view(), name='log-details'),
-    path('api/log/<int:pk>/comment/', api_views.CommentView.as_view(), name='log-comments'),
+    path('api/log/<int:pk>/', api_views.LogDetailView.as_view(), name='log-details'), # log detail view
+    path('api/log/<int:pk>/comment/', api_views.CommentView.as_view(), name='log-comments'), # add/view comments on logs
+    path('api/trips/current/user/', api_views.CurrentActiveView.as_view(), name='user-active-trips'), # view current/active trips for logged in user
 ]
 

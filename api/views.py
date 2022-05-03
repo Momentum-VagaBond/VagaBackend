@@ -5,7 +5,6 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from rest_framework import permissions, viewsets
 from .serializers import LogCommentSerializer,ProfileSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
-# from registration.backends.default.views import RegistrationView
 from rest_framework.response import Response
 from api import serializers
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -13,6 +12,7 @@ from rest_framework.authtoken.models import Token
 # from djoser.views import UserViewSet as DjoserUserViewSet
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
+from django.utils.timezone import now
 
 
 # custom login for the front end to get userpk when logging in
@@ -35,14 +35,11 @@ class CustomAuthToken(ObtainAuthToken):
             'bio': user.bio
         })
 
-# class CustomRegistrationView(RegistrationView):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
-
 # Profile page
 class UserProfileView(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
     def get_object(self):
         return self.request.user
 
@@ -51,12 +48,14 @@ class TripListView(ListCreateAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
 # Specific user and their trips
 class UserTripsView(ListCreateAPIView):
     serializer_class = TripSerializer
+
     def get_queryset(self):
         return self.request.user.trips.all()
 
@@ -65,6 +64,7 @@ class TripLogView(ListCreateAPIView):
     def get_queryset(self):
         return self.request.user.trips.all()
     serializer_class = LogSerializer
+
     def perform_create(self, serializer):
         trip = get_object_or_404(Trip, pk=self.kwargs["pk"])
         serializer.save(user=self.request.user, trip=trip)
@@ -75,7 +75,6 @@ class TripDetailView(RetrieveAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripLogSerializer
 
-
 # Log detail page
 class LogDetailView(RetrieveAPIView):
     queryset = Log.objects.all()
@@ -85,11 +84,12 @@ class LogDetailView(RetrieveAPIView):
 class CommentView(ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+
     def perform_create(self, serializer):
         log = get_object_or_404(Log, pk=self.kwargs["pk"])
         serializer.save(user=self.request.user, log=log)
 
-#for uploading pictures to S3
+# Upload pictures to S3
 class PictureUploadView(CreateView):
     model = Image 
     fields = ['upload',]
@@ -101,13 +101,17 @@ class PictureUploadView(CreateView):
         context['images'] = images
         return context
 
+# Current active trip for logged in user
+class CurrentActiveView(ListCreateAPIView):
+    queryset = Trip.objects.all()
+    serializer_class = TripSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        Trip.objects.filter(begin__lte=now().date(), end__gte=now().date())
+        return Trip.objects.filter(user=user)
 
 
-
-
-
-# # Specific user's trip list
-# class UserTripListView(ListAPIView):
-#     serializer_class = TripSerializer
-#     def get_queryset(self):
-#         return self.request.user.trips.all()
+    # def get_queryset(self, *args, **kwargs):
+    #     Trip.objects.filter(begin__lte=now().date())
+    #     return Trip.objects.filter()
