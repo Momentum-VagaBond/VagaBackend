@@ -32,5 +32,7 @@ urlpatterns = [
     path('api/log/<int:pk>/', api_views.LogDetailView.as_view(), name='log-details'), # log detail view
     path('api/log/<int:pk>/comment/', api_views.CommentView.as_view(), name='log-comments'), # add/view comments on logs
     path('api/trips/current/user/', api_views.CurrentActiveView.as_view(), name='user-active-trips'), # view current/active trips for logged in user
+    path('api/trip/future/user/', api_views.FutureActiveView.as_view(), name='user-future-trips'), # view future trips for logged in user
+    path('api/trip/past/user/', api_views.PastActiveView.as_view(), name='user-past-trips'), # view past trips for logged in user
 ]
 

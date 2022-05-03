@@ -105,7 +105,22 @@ class PictureUploadView(CreateView):
 class CurrentActiveView(ListCreateAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
-
     def get_queryset(self):
         user = self.request.user
         return Trip.objects.filter(end__gt=now().date(), begin__lte=now().date(),user=user)
+
+# Future trips for a logged in user
+class FutureActiveView(ListCreateAPIView):
+    queryset = Trip.objects.all()
+    serializer_class = TripSerializer
+    def get_queryset(self):
+        user = self.request.user
+        return Trip.objects.filter(begin__gte=now().date(), user=user)
+
+# Past trips for a logged in user
+class PastActiveView(ListCreateAPIView):
+    queryset = Trip.objects.all()
+    serializer_class = TripSerializer
+    def get_queryset(self):
+        user = self.request.user
+        return Trip.objects.filter(end__lte=now().date(), user=user)
