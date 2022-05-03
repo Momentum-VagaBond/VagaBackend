@@ -3,7 +3,7 @@ from core.models import User, Trip, Contacts, Log, Comment, Image
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import permissions, viewsets
-from .serializers import LogCommentSerializer,ProfileSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
+from .serializers import LogCommentSerializer,ProfileSerializer, UserSerializer, ImageSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
 from rest_framework.generics import ListCreateAPIView, ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from api import serializers
@@ -17,7 +17,7 @@ from django.core.mail import send_mail
 from django.shortcuts import render
 from django.utils.timezone import now
 from django.template.loader import render_to_string
-from rest_framework.parsers import FileUploadParser, JSONParser
+from rest_framework.parsers import FileUploadParser
 from rest_framework.exceptions import PermissionDenied
 
 
@@ -111,25 +111,18 @@ class CommentView(ListCreateAPIView):
 
 # Upload pictures to S3
 class PictureUploadView(CreateAPIView):
-    parser_classes = [FileUploadParser, JSONParser]
-    queryset = Log.objects.all()
-    serializer_class = LogSerializer
+    parser_classes = [FileUploadParser]
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
 
-    def save_file_attachment(self, file):
-        log = self.get_object()
-        log.photo.save(file.name, file, save=True)
 
     def perform_create(self, serializer):
         if 'file' in self.request.data:
-            self.save_file_attachment(self.request.data["file"])
-        super().perform_update(serializer)
-
-    def get_object(self):
-        log_instance = get_object_or_404(self.get_queryser(), pk=self.kwargs["id"])
-        if self.request.log is not log_instance:
-            raise PermissionDenied()
-        return log_instance
-
+            log = get_object_or_404(Log, pk=self.kwargs['pk'])
+            serializer.save(
+                log=log, picture=self.request.data["file"], user=self.request.user
+            )
+    
 
 
     # model = Image 

@@ -89,9 +89,6 @@ class ImageSerializer(serializers.ModelSerializer):
         model = Image
         fields = (
             'picture',
-            'log_images',
-            'user_images',
-            'uploaded_at',
         )
 
 
