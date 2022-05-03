@@ -16,9 +16,11 @@ Request
 JSON
 ```
 {
-    “email”: “email”,
+    	“email”: “email”,
 	"username": "username",
-	"password": "password"
+	"password": "password",
+	"first_name": "Your-first-name",
+	"last_name": "your_last=name",
 }
 ```
 Response
@@ -28,14 +30,16 @@ Response
 {
 	"email": "wanderlust@travel.me",
 	"username": "nomad",
-	"id": 1
+	"id": 1,
+	"first_name": "Fernando",
+	"last_name": "de Soto"
 }
 ```
 
 ### **log in**
 ---
 Request
-> POST /auth/token/login/
+> POST /auth-token-login/
 
 JSON
 ```
@@ -71,6 +75,65 @@ Response
 No body returned for response
 ```
 
+### **view logged in user's profile**
+*be sure that you have a token under 'Bearer' with the prefix, 'Token'*
+
+REQUEST
+
+> GET  /api/auth/me
+
+**No JSON input**
+
+RESPONSE
+
+> 200 OK
+```
+{
+	"id": 2,
+	"username": "alex",
+	"first_name": "alexFirst",
+	"last_name": "Last",
+	"avatar": null,
+	"bio": "User has yet to fill in their bio",
+	"trips": [
+		{
+			"pk": 2,
+			"title": "Party only trip",
+			"location": "Paris",
+			"begin": "2022-05-11T00:00:00Z",
+			"end": "2022-05-12T00:00:00Z",
+			"user": "alex",
+			"username": "alex",
+			"user_first_name": "alexFirst",
+			"user_last_name": "Last"
+		},
+		{
+			"pk": 3,
+			"title": "Tx",
+			"location": "Dallas TX",
+			"begin": "2022-05-11T00:00:00Z",
+			"end": "2022-05-12T00:00:00Z",
+			"user": "alex",
+			"username": "alex",
+			"user_first_name": "alexFirst",
+			"user_last_name": "Last"
+		},
+		{
+			"pk": 4,
+			"title": "Knox",
+			"location": "Knox TN",
+			"begin": "2022-05-11T00:00:00Z",
+			"end": "2022-05-12T00:00:00Z",
+			"user": "alex",
+			"username": "alex",
+			"user_first_name": "alexFirst",
+			"user_last_name": "Last"
+		}
+	]
+}
+```
+
+
 ### **start a new trip**
 ---
 *be sure that you have a token entered under 'Bearer' with the prefix, 'Token'*
@@ -81,10 +144,10 @@ Request
 
 ```
 {
-	    "title": "I'm going on a Viking adventure!",
-	    "location": "Iceland",
-	    "begin": "06-21-2022",
-	    "end": "07-01-2022"
+	"title": "I'm going on a Viking adventure!",
+	"location": "Iceland",
+	"begin":"2022-05-11T00:00:00.000Z",
+	"end":"2022-05-19T00:00:00.000Z"
 }
 ```
 
@@ -96,8 +159,8 @@ Response
 	"pk": 2,
 	"title": "I'm going on a Viking adventure!",
 	"location": "Iceland",
-	"begin": "2022-06-21",
-	"end": "2022-07-01",
+	"begin": "2022-06-21 00:00:00-00",
+	"end": "2022-07-01 00:00:00-00",
 	"user": "nomad",
 	"username": "nomad",
 	"user_first_name": "Willem",
@@ -105,7 +168,10 @@ Response
 }
 ```
 
-### **View a list of 'my trips'**
+### **list of all trips**
+
+
+### **View a list of logged in user's trips**
 ---
 *be sure that you have a token entered under 'Bearer' with the prefix, 'Token'*
 
@@ -125,7 +191,8 @@ Response
 		"pk": 2,
 		"title": "I'm going on a Viking adventure!",
 		"location": "Iceland",
-		"duration": "2 weeks",
+		"begin": "2022-05-22T00:00:00Z",
+		"end": "2022-05-31T00:00:00Z",
 		"user": "emilyflo",
 		"username": "emilyflo",
 		"user_first_name": "",
@@ -135,7 +202,8 @@ Response
 		"pk": 3,
 		"title": "Gonna get some sun on my buns!",
 		"location": "Bermuda",
-		"duration": "1 week",
+		"begin": "2022-02-15T00:00:00Z",
+		"end": "2022-02-29T00:00:00Z",
 		"user": "emilyflo",
 		"username": "emilyflo",
 		"user_first_name": "",
@@ -145,7 +213,8 @@ Response
 		"pk": 4,
 		"title": "I want to visit as many coffee shops as possible",
 		"location": "Seattle",
-		"duration": "4 days",
+		"begin": "2022-06-03T00:00:00Z",
+		"end": "2022-06-09T00:00:00Z",
 		"user": "emilyflo",
 		"username": "emilyflo",
 		"user_first_name": "",
@@ -155,7 +224,8 @@ Response
 		"pk": 5,
 		"title": "Born to be wild",
 		"location": "Juno, Alaska",
-		"duration": "1 month",
+		"begin": "2022-07-16T00:00:00Z",
+		"end": "2022-07-24T00:00:00Z",
 		"user": "emilyflo",
 		"username": "emilyflo",
 		"user_first_name": "",
@@ -198,7 +268,7 @@ Response
 }
 ```
 
-### **view all trips of one user and their logs**
+### **view one trip of one user and that trip's respective logs**
 ---
 *no authentication required*
 
@@ -217,6 +287,8 @@ Response
 	"pk": 1,
 	"title": "I need some ME time",
 	"location": "Banff, Alberta, Canada",
+	"begin": "2022-05-22T00:00:00Z",
+	"end": "2022-05-29T00:00:00Z",
 	"user": "emilyflo",
 	"username": "emilyflo",
 	"user_first_name": "Emily",
@@ -251,4 +323,30 @@ Response
 		}
 	]
 }
+```
+
+### **add comment to log entry**
+
+Request
+
+> POST
+
+JSON
+
+Response
+
+```
+```
+
+### **add comment to log entry**
+
+Request
+
+> POST
+
+JSON
+
+Response
+
+```
 ```
