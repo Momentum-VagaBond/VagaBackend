@@ -1,5 +1,5 @@
 from django.forms import CharField
-from core.models import Image, User, Contacts, Trip, Log, Comment, Follow
+from core.models import Image, User, Contacts, Trip, Log, Comment
 from rest_framework import serializers
 
 
@@ -43,6 +43,7 @@ class TripSerializer(serializers.ModelSerializer):
             'location',
             'begin',
             'end',
+            'subscribers',
             'user',
             'username',
             'user_first_name',
@@ -106,6 +107,7 @@ class LogSerializer(serializers.ModelSerializer):
         fields = (
             'pk',
             'user',
+            'title',
             'location',
             'latitude',
             'longitude',
@@ -161,6 +163,7 @@ class TripLogSerializer(serializers.ModelSerializer):
             'username',
             'user_first_name',
             'user_last_name',
+            'subscribers',
             'trip_logs'
         )
 
@@ -183,6 +186,7 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'pk',
             'user',
             'location',
+            'title',
             'latitude',
             'longitude',
             'details',
@@ -193,16 +197,16 @@ class LogCommentSerializer(serializers.ModelSerializer):
         )
 
 
-class FollowerSerializer(serializers.ModelSerializer):
-    user = UserSerializer(many=False)
-    follower = serializers.SerializerMethodField()
+class SubscribeSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    
     class Meta:
-        model = Follow
-        fields = ('user','follower')
-
-    def get_follower(self, obj):
-        context = self.context
-        request = context.get("request")
-        qs = request.user.following_user.all()
-        data = [{'id': obj.pk, 'user_id': obj.user_id, 'first_name': obj.req_field} for obj in qs]
-        return data
+        model = Trip
+        fields = (
+            'user',
+            'title',
+            'location',
+            'begin',
+            'end',
+            'subscribers'
+        )
