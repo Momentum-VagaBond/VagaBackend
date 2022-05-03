@@ -108,10 +108,4 @@ class CurrentActiveView(ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        Trip.objects.filter(begin__lte=now().date(), end__gte=now().date())
-        return Trip.objects.filter(user=user)
-
-
-    # def get_queryset(self, *args, **kwargs):
-    #     Trip.objects.filter(begin__lte=now().date())
-    #     return Trip.objects.filter()
+        return Trip.objects.filter(end__gt=now().date(), begin__lte=now().date(),user=user)
