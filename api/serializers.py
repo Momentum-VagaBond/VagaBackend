@@ -98,6 +98,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class LogSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
+    log = serializers.ImageField(required=False)
     
     def get_user(self, obj):
         return obj.user.username
@@ -114,7 +115,7 @@ class LogSerializer(serializers.ModelSerializer):
             'details',
             'date_logged',
             'reactions',
-            
+            'log'
         )
 
 
