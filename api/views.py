@@ -152,6 +152,8 @@ class PictureUploadView(CreateAPIView):
             log = get_object_or_404(Log, pk=self.kwargs['pk'])
             serializer.save(
                 picture=self.request.data["file"], user=self.request.user, log_image=log
+
+
             )
 
 
