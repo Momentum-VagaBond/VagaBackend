@@ -17,7 +17,7 @@ from django.core.mail import send_mail
 from django.shortcuts import render
 from django.utils.timezone import now
 from django.template.loader import render_to_string
-from rest_framework.parsers import FileUploadParser
+from rest_framework.parsers import FileUploadParser, JSONParser
 from rest_framework.exceptions import PermissionDenied
 
 
@@ -111,16 +111,15 @@ class CommentView(ListCreateAPIView):
 
 # Upload pictures to S3
 class PictureUploadView(CreateAPIView):
-    parser_classes = [FileUploadParser]
+    parser_classes = [FileUploadParser, JSONParser]
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
-
-
+    
     def perform_create(self, serializer):
         if 'file' in self.request.data:
             log = get_object_or_404(Log, pk=self.kwargs['pk'])
             serializer.save(
-                log=log, picture=self.request.data["file"], user=self.request.user
+                picture=self.request.data["file"], user=self.request.user, log_image=log
             )
     
 

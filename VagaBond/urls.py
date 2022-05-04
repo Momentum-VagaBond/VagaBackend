@@ -40,8 +40,6 @@ urlpatterns = [
     # path('api/trip/past/following/', api_views.PastFollowingView.as_view(), name='following-past-trips'), # view past trips for users 'im' following
 
     path('api/logs/<int:pk>/images/', api_views.PictureUploadView.as_view(), name='picture-upload')
-
-
 ]
 
 
