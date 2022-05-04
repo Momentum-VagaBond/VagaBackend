@@ -47,7 +47,7 @@ class Trip(models.Model):
     location = models.CharField(max_length=150, blank=True)
     begin = models.DateTimeField(blank=False,)
     end = models.DateTimeField(blank=False,)
-    subscribers = models.ManyToManyField(Contacts, related_name='trip_subscribers')
+    subscribers = models.ManyToManyField(Contacts, related_name='trip_subscribers', blank=False)
     
     def __str__(self):
         return self.location
