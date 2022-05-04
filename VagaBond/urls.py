@@ -34,12 +34,10 @@ urlpatterns = [
     path('api/trips/current/user/', api_views.CurrentActiveView.as_view(), name='user-active-trips'), # view current/active trips for logged in user
     path('api/trip/future/user/', api_views.FutureActiveView.as_view(), name='user-future-trips'), # view future trips for logged in user
     path('api/trip/past/user/', api_views.PastActiveView.as_view(), name='user-past-trips'), # view past trips for logged in user
-    path('api/subscribed/', api_views.SubscriberView.as_view(), name='subscribed'),
+    path('api/subscribed/', api_views.SubscriberView.as_view(), name='subscribed')
     # path('api/trips/current/following/', api_views.CurrentFollowingView.as_view(), name='following-active-trips'),# view current trips for users 'im' following
     # path('api/trip/future/following/', api_views.FutureFollowingView.as_view(), name='following-future-trips'), # view future trips for users 'im' following
     # path('api/trip/past/following/', api_views.PastFollowingView.as_view(), name='following-past-trips'), # view past trips for users 'im' following
-
-    path('api/logs/<int:pk>/images/', api_views.PictureUploadView.as_view(), name='picture-upload'),
 ]
 
 

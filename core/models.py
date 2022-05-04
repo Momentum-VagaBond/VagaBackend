@@ -47,7 +47,7 @@ class Trip(models.Model):
     location = models.CharField(max_length=150, blank=True)
     begin = models.DateTimeField(blank=False,)
     end = models.DateTimeField(blank=False,)
-    subscribers = models.ManyToManyField(Contacts, related_name='trip_subscribers', blank=True)
+    subscribers = models.ManyToManyField(Contacts, related_name='trip_subscribers')
     
     def __str__(self):
         return self.location
@@ -100,7 +100,7 @@ class Comment(models.Model):
 class Image(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     picture = models.ImageField(blank=True, null=True)
-    log_image = models.ForeignKey(Log, on_delete=models.CASCADE, related_name='log', blank=True)
+    log_image = models.ForeignKey(Log, on_delete=models.CASCADE, related_name='log_images')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_images')
 
     def __img__(self):
