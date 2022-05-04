@@ -120,7 +120,7 @@ class PictureUploadView(CreateAPIView):
         if 'file' in self.request.data:
             log = get_object_or_404(Log, pk=self.kwargs['pk'])
             serializer.save(
-                log=log, picture=self.request.data["file"], user=self.request.user
+                log = log, picture=self.request.data["file"], user=self.request.user
             )
     
 

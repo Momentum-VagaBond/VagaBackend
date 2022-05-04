@@ -94,7 +94,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class LogSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
-    log_images = serializers.ImageField(required=False)
+    log = serializers.ImageField(required=False)
     def get_user(self, obj):
         return obj.user.username
 
@@ -109,7 +109,7 @@ class LogSerializer(serializers.ModelSerializer):
             'details',
             'date_logged',
             'reactions',
-            'log_images',
+            'log',
         )
 
 
@@ -167,7 +167,7 @@ class TripLogSerializer(serializers.ModelSerializer):
 
 
 class LogCommentSerializer(serializers.ModelSerializer):
-    log_images = serializers.ImageField(required=False)
+    log = serializers.ImageField(required=False)
     log_comments = CommentSerializer(many=True, required=False)
     user = serializers.SerializerMethodField()
 
@@ -186,5 +186,5 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'date_logged',
             'reactions',
             'log_comments',
-            'log_images'
+            'log'
         )
