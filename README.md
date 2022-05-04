@@ -3,6 +3,9 @@
 ---
 to run this locally:
 - install django
+
+for trip subscribers to use this app, the contact of any trip must user the email that the traveler provided to register/log in.
+
 ---
 ## **endpoints**
 
