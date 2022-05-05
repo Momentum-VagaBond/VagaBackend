@@ -17,7 +17,7 @@ from django.core.mail import send_mail
 from django.shortcuts import render
 from django.utils.timezone import now
 from django.template.loader import render_to_string
-from .permissions import IsOwner
+from .permissions import IsTripOwner
 
 
 # custom login for the front end to get userpk when logging in [POST]
@@ -96,6 +96,20 @@ class SubscriberView(ListCreateAPIView):
 # Log an entry on a trip [POST]
 class TripLogView(ListCreateAPIView):
     serializer_class = LogSerializer
+    queryset = Trip.objects.all()
+
+
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        # is example of what could be used in 'GET' request
+        # if self.request.method == 'GET':
+        #     self.permission_classes = [IsAuthenticated]
+        if self.request.method == 'POST':
+            self.permission_classes = [IsTripOwner]
+        return self.permission_classes
+
 
     def get_queryset(self):
         return self.request.user.trips.all()
