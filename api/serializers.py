@@ -1,14 +1,19 @@
 from django.forms import CharField
-from core.models import Image, User, Contacts, Trip, Log, Comment
+from core.models import Image, User, Contact, Trip, Log, Comment
 from rest_framework import serializers
 
 
 
 
-class ContactsSerializer(serializers.ModelSerializer):
+class ContactSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
+
+
+    def get_user(self, obj):
+        return obj.user.username
+
     class Meta:
-        model = Contacts
+        model = Contact
         fields = (
             'user',
             'first_name',
@@ -17,10 +22,10 @@ class ContactsSerializer(serializers.ModelSerializer):
         )
 
 
-class TripContactsSerializer(serializers.ModelSerializer):
+class TripContactSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     class Meta:
-        model = Contacts
+        model = Contact
         fields = (
             
         )
@@ -213,3 +218,5 @@ class SubscribeSerializer(serializers.ModelSerializer):
             'end',
             'subscribers'
         )
+
+
