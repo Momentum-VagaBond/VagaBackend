@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404
-from core.models import User, Trip, Contacts, Log, Comment, Image
+from core.models import User, Trip, Contact, Log, Comment, Image
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import permissions, viewsets
-from .serializers import ImageSerializer, LogCommentSerializer,ProfileSerializer, SubscribeSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
-from rest_framework.generics import ListCreateAPIView, CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
+from .serializers import ContactSerializer, ImageSerializer, LogCommentSerializer,ProfileSerializer, SubscribeSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
+from rest_framework.generics import ListCreateAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from api import serializers
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -210,3 +210,9 @@ class PastActiveView(ListCreateAPIView):
 #     def get_queryset(self):
 #         user = self.request.following
 #         return Trip.objects.filter(end__lte=now().date(), user=user)
+
+
+# Add/Delete/View contacts for a User
+class UserContactView(ListCreateAPIView):
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
