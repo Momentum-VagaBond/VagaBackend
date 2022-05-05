@@ -16,11 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from api import views as api_views
+from rest_framework.routers import DefaultRouter
+
+users_router = DefaultRouter()
+users_router.register("users", api_views.UserViewSet, basename="users")
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/auth/', include(users_router.url)),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path('api-token-auth/', api_views.CustomAuthToken.as_view()), # custom login for front end to receive userpk at login

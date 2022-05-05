@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from api import serializers
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-# from djoser.views import UserViewSet as DjoserUserViewSet
+from djoser.views import UserViewSet as DjoserUserViewSet
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.core.mail import send_mail
@@ -18,6 +18,7 @@ from django.utils.timezone import now
 from django.template.loader import render_to_string
 from .permissions import IsTripOwner
 from rest_framework.parsers import FileUploadParser, JSONParser
+from django.core.exceptions import PermissionDenied
 
 
 # custom login for the front end to get userpk when logging in [POST]
@@ -47,6 +48,28 @@ class UserProfileView(RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+# Upload profile image
+class UserViewSet(DjoserUserViewSet):
+    queryset = User.objects.all()
+    serlializer_class = UserSerializer
+    parser_classes = [JSONParser, FileUploadParser]
+
+    def save_file_attachment(self, file):
+        user = self.get_object()
+        user.photo.save(file.name, file, save=True)
+
+    def perform_update(self, serializer):
+        if "file" in self.request.data:
+            self.save_file_attachment(self.request.data["file"])
+        super().perform_update(serializer)
+
+    def get_object(self):
+        user_instance = get_object_or_404(self.get_queryset(), pk=self.kwargs["id"])
+        if self.request.user is not user_instance:
+            raise PermissionDenied()
+        return user_instance
 
 # Create a new trip with [POST], List of all trips [GET]
 class TripListView(ListCreateAPIView):
