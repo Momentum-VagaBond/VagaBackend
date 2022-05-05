@@ -52,7 +52,6 @@ class UserProfileView(RetrieveAPIView):
 class TripListView(ListCreateAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
-    permission_classes = (IsAuthenticated, IsOwner)
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -103,7 +102,7 @@ class TripLogView(ListCreateAPIView):
 
 
     def perform_create(self, serializer):
-        trip = get_object_or_404(Trip, pk=self.kwargs["pk"])
+        trip = get_object_or_404(Trip, pk=self.kwargs["trip_pk"])
         serializer.save(user=self.request.user, trip=trip)
         self.mail_trip_followers()
         
