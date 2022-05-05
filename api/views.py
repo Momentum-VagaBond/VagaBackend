@@ -17,7 +17,7 @@ from django.core.mail import send_mail
 from django.shortcuts import render
 from django.utils.timezone import now
 from django.template.loader import render_to_string
-
+from .permissions import IsOwner
 
 
 # custom login for the front end to get userpk when logging in [POST]
@@ -52,8 +52,7 @@ class UserProfileView(RetrieveAPIView):
 class TripListView(ListCreateAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
-    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
+    
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
         #ADD FOLLOWERS query for contacts for logged in user. which ones are you adding? do you want to use the audience feature? make it an optional field on the serializer or query params (which set of contacts do you want to add?) query for 
@@ -103,7 +102,7 @@ class TripLogView(ListCreateAPIView):
 
 
     def perform_create(self, serializer):
-        trip = get_object_or_404(Trip, pk=self.kwargs["pk"])
+        trip = get_object_or_404(Trip, pk=self.kwargs["trip_pk"])
         serializer.save(user=self.request.user, trip=trip)
         self.mail_trip_followers()
         

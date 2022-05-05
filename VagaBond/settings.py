@@ -149,7 +149,7 @@ REST_FRAMEWORK = {
     "DATE_INPUT_FORMATS": ['%m-%d-%Y'],
 
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
+        'rest_framework.permissions.IsAuthenticated'
     ],
         'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
