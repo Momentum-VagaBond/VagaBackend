@@ -123,13 +123,20 @@ class TripLogView(ListCreateAPIView):
 
 
     def mail_trip_followers(self):
-        send_mail( 
-            'Hello',
-            'Body', 
-            settings.EMAIL_HOST_USER,
-            [settings.RECIPIENT_ADDRESS],
-            html_message = render_to_string('mail/log.html', {'greeting':'hello from kpt'})
-        )
+        
+        contact_list = Contact.objects.all()
+        
+        email_list = []
+        for contact in contact_list:
+            
+            email_list.append(contact.email)
+            send_mail( 
+                'Hello',
+                'Body', 
+                settings.EMAIL_HOST_USER,
+                email_list,
+                html_message = render_to_string('mail/log.html', {'greeting':'hello from kpt'})
+            )
         
 
 
