@@ -103,12 +103,9 @@ class TripLogView(ListCreateAPIView):
         """
         Instantiates and returns the list of permissions that this view requires.
         """
-        # is example of what could be used in 'GET' request
-        # if self.request.method == 'GET':
-        #     self.permission_classes = [IsAuthenticated]
         if self.request.method == 'POST':
             self.permission_classes = [IsTripOwner]
-        return self.permission_classes
+        return [permission() for permission in self.permission_classes]
 
 
     def get_queryset(self):
