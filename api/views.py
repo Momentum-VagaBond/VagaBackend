@@ -3,21 +3,21 @@ from core.models import User, Trip, Contacts, Log, Comment, Image
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import permissions, viewsets
-from .serializers import LogCommentSerializer,ProfileSerializer, SubscribeSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
-from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
+from .serializers import ImageSerializer, LogCommentSerializer,ProfileSerializer, SubscribeSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
+from rest_framework.generics import ListCreateAPIView, CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from api import serializers
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 # from djoser.views import UserViewSet as DjoserUserViewSet
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
 from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import render
 from django.utils.timezone import now
 from django.template.loader import render_to_string
 from .permissions import IsTripOwner
+from rest_framework.parsers import FileUploadParser, JSONParser
 
 
 # custom login for the front end to get userpk when logging in [POST]
@@ -153,16 +153,15 @@ class CommentView(ListCreateAPIView):
         serializer.save(user=self.request.user, log=log)
 
 # Upload pictures to S3 [POST]
-class PictureUploadView(CreateView):
-    model = Image 
-    fields = ['upload',]
-    success_url = reverse_lazy('home')
+class PictureUploadView(CreateAPIView):
+    parser_classes = [FileUploadParser, JSONParser]
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        images = Image.objects.all()
-        context['images'] = images
-        return context
+    def perform_create(self, serializer):
+        if 'file' in self.request.data:
+            log = get_object_or_404(Log, pk=self.kwargs['pk'])
+            serializer.save(picture=self.request.data['file'], user=self.request.user, log_image=log)
 
 # Current active trip for logged in user [GET]
 class CurrentActiveView(ListCreateAPIView):
