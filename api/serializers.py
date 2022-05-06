@@ -64,6 +64,9 @@ class TripSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     trips = TripSerializer(many=True, read_only=True)
+    username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
+    first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
+    last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
     
     class Meta:
         model=User

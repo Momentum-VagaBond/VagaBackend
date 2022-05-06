@@ -40,6 +40,7 @@ urlpatterns = [
     # path('api/trip/future/following/', api_views.FutureFollowingView.as_view(), name='following-future-trips'), # view future trips for users 'im' following
     # path('api/trip/past/following/', api_views.PastFollowingView.as_view(), name='following-past-trips'), # view past trips for users 'im' following
     path('api/contacts/', api_views.UserContactView.as_view(), name='contacts'),
+    path('api/user/<int:user_pk>/subscribers/', api_views.UserSubView.as_view(), name='subscribers')
 ]
 
 
