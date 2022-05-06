@@ -171,6 +171,8 @@ class TripLogSerializer(serializers.ModelSerializer):
             'pk',
             'title',
             'location',
+            'begin',
+            'end',
             'user',
             'username',
             'user_first_name',
