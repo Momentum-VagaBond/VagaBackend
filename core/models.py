@@ -75,6 +75,7 @@ class Log(models.Model):
         ('angry', 'U+1F621'),
     ]
     reactions = models.CharField(choices=reactions, max_length=20, blank=True)
+    
 
     def __str__(self):
         return self.location
@@ -102,6 +103,7 @@ class Image(models.Model):
     picture = models.ImageField(blank=True, null=True)
     log_image = models.ForeignKey(Log, on_delete=models.CASCADE, related_name='log')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_images')
+    
 
     def __img__(self):
         return self.picture

@@ -42,6 +42,3 @@ urlpatterns = [
     path('api/contacts/', api_views.UserContactView.as_view(), name='contacts'),
     path('api/user/<int:user_pk>/subscribers/', api_views.UserSubView.as_view(), name='subscribers')
 ]
-
-
-
