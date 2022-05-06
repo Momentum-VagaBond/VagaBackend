@@ -224,12 +224,19 @@ class UserContactView(ListCreateAPIView):
 # View Trips logged in User is subscribed to
 class UserSubView(ListCreateAPIView):
     serializer_class = TripSerializer
-    queryset = User.objects.all()
-    # breakpoint()
-    def get_queryset( self):
-        contact = Contact.objects.get(id=1) # this is hardcoded to work for Emily's local
+    queryset = Trip.objects.all()
+    def get_queryset(self):
+        user_email = self.request.user.email
+        contact= Contact.objects.get(email=user_email)
         return contact.trip_subscribers.all()
-# class UserSubView(ListAPIView):
+
+
+
+
+#         take the logged in user, find that instance
+#         logged in user's email
+#         return all the trips that that user has in the contact list
+# # class UserSubView(ListAPIView):
 #     queryset = Contact.objects.all()
 #     serializer_class = UserSerializer
 #     queryset = User.objects.all

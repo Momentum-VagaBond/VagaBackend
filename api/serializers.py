@@ -216,16 +216,16 @@ class LogCommentSerializer(serializers.ModelSerializer):
 
 class SubscribeSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
+    trip_subscribers = serializers.SerializerMethodField()
     
     class Meta:
-        model = Trip
+        model = Contact
         fields = (
             'user',
             'title',
             'location',
             'begin',
             'end',
-            'subscribers'
+            'subscribers',
+            'trip_subscribers'
         )
-
-
