@@ -134,7 +134,7 @@ class TripLogView(ListCreateAPIView):
         """
         if self.request.method == "POST":
             self.permission_classes = [IsTripOwner]
-        return self.permission_classes
+        return [permission() for permission in self.permission_classes]
 
     def get_queryset(self):
         return self.request.user.trips.all()
