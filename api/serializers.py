@@ -8,7 +8,6 @@ from rest_framework import serializers
 class ContactSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
 
-
     def get_user(self, obj):
         return obj.user.username
 
@@ -22,6 +21,8 @@ class ContactSerializer(serializers.ModelSerializer):
         )
 
 
+
+
 class TripContactSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
     class Meta:
@@ -29,6 +30,18 @@ class TripContactSerializer(serializers.ModelSerializer):
         fields = (
             
         )
+
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = (
+            'picture',
+            
+            )
+
+
 
 
 class TripSerializer(serializers.ModelSerializer):
@@ -43,7 +56,6 @@ class TripSerializer(serializers.ModelSerializer):
 
     def get_trip_logs(self, obj):
         return obj.trip_logs
-
 
     class Meta:
         model = Trip
@@ -60,7 +72,10 @@ class TripSerializer(serializers.ModelSerializer):
             'user_last_name',
             
             
+            
         )
+
+
 
 class UserSerializer(serializers.ModelSerializer):
     trips = TripSerializer(many=True, read_only=True)
@@ -79,6 +94,8 @@ class UserSerializer(serializers.ModelSerializer):
             'bio',
             'trips',
         )
+
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     class TripProfileSerializer(serializers.ModelSerializer):
@@ -100,18 +117,14 @@ class ProfileSerializer(serializers.ModelSerializer):
         return user_instance
 
 
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = (
-            'picture',
-            )
+
+
+
 
 
 class LogSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
-    log = serializers.ImageField(required=False)
-    
+    image = ImageSerializer(required=False)
 
     def get_user(self, obj):
         return obj.user.username
@@ -128,9 +141,10 @@ class LogSerializer(serializers.ModelSerializer):
             'details',
             'date_logged',
             'reactions',
-            'log',
-            
+            'image',
         )
+
+
 
 
 
@@ -158,12 +172,15 @@ class CommentSerializer(serializers.ModelSerializer):
         )
 
 
+
+
 class TripLogSerializer(serializers.ModelSerializer):
     trip_logs = serializers.SerializerMethodField()
     user = serializers.SerializerMethodField()
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
     user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
+    image = ImageSerializer(required=False)
 
     def get_user(self, obj):
         return obj.user.username
@@ -181,12 +198,15 @@ class TripLogSerializer(serializers.ModelSerializer):
             'user_first_name',
             'user_last_name',
             'subscribers',
-            'trip_logs'
+            'trip_logs',
+            'image',
         )
 
     def get_trip_logs(self, instance):
         trip_logs = instance.trip_logs.order_by('-pk')
         return LogSerializer(trip_logs, many=True).data
+
+
 
 
 class LogCommentSerializer(serializers.ModelSerializer):
@@ -212,6 +232,8 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'log_comments',
             'log'
         )
+
+
 
 
 class SubscribeSerializer(serializers.ModelSerializer):
