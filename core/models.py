@@ -1,4 +1,4 @@
-#changes
+#change
 import geocoder
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -52,16 +52,20 @@ class Trip(models.Model):
     def __str__(self):
         return self.location
 
+#different line
+#commented into
+#models
+
+mapbox_token = "pk.eyJ1IjoiZW1pbHlmbG8iLCJhIjoiY2wyZGRsNG9hMHk0aDNicGR1bjhxZGZmdyJ9.OwfzAfjxswxUss6pTmNVUQ"
 
 
-mapbox_token = 'pk.eyJ1IjoiZW1pbHlmbG8iLCJhIjoiY2wyZGRsNG9hMHk0aDNicGR1bjhxZGZmdyJ9.OwfzAfjxswxUss6pTmNVUQ'
 
 
 class Log(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='trip_logs')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='logs', default=True)
     title = models.CharField(max_length=100, blank=False)
-    location = models.CharField(max_length=75, blank=True)
+    location = models.CharField(max_length=75)
     latitude = models.FloatField('latitude', blank=True, null=True)
     longitude = models.FloatField('longitude', blank=True, null=True)
     details = models.TextField(max_length=250)
@@ -88,22 +92,25 @@ class Log(models.Model):
         return super(Log, self).save(*args, **kwargs)
 
 
+
 class Comment(models.Model):
     log = models.ForeignKey(Log, on_delete=models.CASCADE, related_name='log_comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comments', default=True)
     comments = models.TextField(max_length=250)
     date_commented = models.DateTimeField(auto_now_add=True)
 
+
+
     def __str__(self):
         return self.comments
+
 
 
 class Image(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     picture = models.ImageField(blank=True, null=True)
-    log_image = models.ForeignKey(Log, on_delete=models.CASCADE, related_name='log')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_images')
+    log = models.ForeignKey(Log, on_delete=models.CASCADE, related_name='images')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='images')
     
-
     def __img__(self):
         return self.picture
