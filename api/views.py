@@ -3,7 +3,7 @@ from core.models import User, Trip, Contact, Log, Comment, Image
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import permissions, viewsets
-from .serializers import ContactSerializer, ImageSerializer, LogCommentSerializer, SubscribeSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
+from .serializers import ContactSerializer, ImageSerializer, LogCommentImageSerializer, LogCommentSerializer, SubscribeSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
 from rest_framework.generics import ListCreateAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from api import serializers
@@ -277,3 +277,10 @@ class UserFutureSubView(ListCreateAPIView):
 #     queryset = User.objects.all
 # contact = get_object_or_404(Contact, user_id=pk)
 # Subscribers = contact.trip_subscribers.all()
+
+
+#
+class LogCommentImageView(RetrieveAPIView):
+    serializer_class = LogCommentImageSerializer
+    queryset = Log.objects.all()
+
