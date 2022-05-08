@@ -21,10 +21,12 @@ class ContactSerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    log = serializers.SerializerMethodField()
     class Meta:
         model = Image
         fields = (
             'picture',
+            'log',
             )
 
 
@@ -209,4 +211,30 @@ class SubscribeSerializer(serializers.ModelSerializer):
             'end',
             'subscribers',
             'trip_subscribers'
+        )
+
+class LogImageSerializer(serializers.ModelSerializer):
+    other = LogSerializer(many=True, required=False)
+    log = serializers.SerializerMethodField()
+    details = serializers.SerializerMethodField()
+    location = serializers.SerializerMethodField()
+
+    def get_log(self, obj):
+        return obj.log.details
+    def get_details(self, obj):
+        return obj.log.details
+    def get_location(self, obj):
+        return obj.log.location
+
+    class Meta:
+        model = Image
+        fields = (
+            'pk',
+            'user',
+            'other',
+            'log',
+            'picture',
+            'details',
+            'location',
+            
         )

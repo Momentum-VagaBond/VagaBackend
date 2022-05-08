@@ -42,6 +42,9 @@ urlpatterns = [
     path('api/user/<int:user_pk>/subscribed/', api_views.UserSubView.as_view(), name='subscribed'),
     path('api/user/<int:user_pk>/current/subscribed/', api_views.UserCurrentSubView.as_view(), name='current-subscribed'),
     path('api/user/<int:user_pk>/past/subscribed/', api_views.UserPastSubView.as_view(), name='past-subscribed'),
-    path('api/user/<int_user_pk>/future/subscribed/', api_views.UserFutureSubView.as_view(), name='future-subscribed')
+    path('api/user/<int_user_pk>/future/subscribed/', api_views.UserFutureSubView.as_view(), name='future-subscribed'),
+
+
+    path('api/log/<int:pk>/fixed/', api_views.ImageWorkingView.as_view(), name='image-log'),
 
 ]
