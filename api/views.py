@@ -3,13 +3,14 @@ from core.models import User, Trip, Contact, Log, Comment, Image
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework import permissions, viewsets
-from .serializers import ContactSerializer, ImageSerializer, LogCommentSerializer,ProfileSerializer, SubscribeSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
+from .serializers import ContactSerializer, ImageSerializer, LogCommentSerializer, SubscribeSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
 from rest_framework.generics import ListCreateAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from api import serializers
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 # from djoser.views import UserViewSet as DjoserUserViewSet
+from rest_framework.renderers import TemplateHTMLRenderer
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.core.mail import send_mail
@@ -106,7 +107,7 @@ class SubscriberView(ListCreateAPIView):
 
 
 # Log an entry on a trip [POST]
-class TripLogView(ListCreateAPIView):
+class TripLogView(CreateAPIView):
     serializer_class = LogSerializer
     queryset = Trip.objects.all()
 
@@ -143,7 +144,7 @@ class TripLogView(ListCreateAPIView):
                 'Body', 
                 settings.EMAIL_HOST_USER,
                 email_list,
-                html_message = render_to_string('mail/log.html', {'greeting':'hello from kpt'})
+                html_message = render_to_string('mail/log.html', {'greeting':'just checking in...'})
             )
         
 
@@ -175,7 +176,7 @@ class CommentView(ListCreateAPIView):
 
 
 # Upload pictures to S3 [POST]
-class PictureUploadView(CreateAPIView):
+class PictureUploadView(ListCreateAPIView):
     parser_classes = [FileUploadParser, JSONParser]
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
@@ -272,13 +273,3 @@ class UserSubView(ListCreateAPIView):
 #     queryset = User.objects.all
 # contact = get_object_or_404(Contact, user_id=pk)
 # Subscribers = contact.trip_subscribers.all()
-# class SubUserView
-# queryset = Trip.objects.all()
-# serializer_class= TripSerializer
-    # 2 lines below show all subscribers on a trip
-    # trip = get_object_or_404(Trip, pk=trip_pk)
-    #trip.subscribers.all()
-    #if contacts belonging to a trip = logged in email then show trips
-#if email = email return trips
-
-
