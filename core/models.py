@@ -52,14 +52,9 @@ class Trip(models.Model):
     def __str__(self):
         return self.location
 
-#different line
-#commented into
-#models
+
 
 mapbox_token = "pk.eyJ1IjoiZW1pbHlmbG8iLCJhIjoiY2wyZGRsNG9hMHk0aDNicGR1bjhxZGZmdyJ9.OwfzAfjxswxUss6pTmNVUQ"
-
-
-
 
 class Log(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='trip_logs')

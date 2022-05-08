@@ -35,10 +35,13 @@ urlpatterns = [
     path('api/trips/current/user/', api_views.CurrentActiveView.as_view(), name='user-active-trips'), # view current/active trips for logged in user
     path('api/trips/future/user/', api_views.FutureActiveView.as_view(), name='user-future-trips'), # view future trips for logged in user
     path('api/trips/past/user/', api_views.PastActiveView.as_view(), name='user-past-trips'), # view past trips for logged in user
-    path('api/subscribed/', api_views.SubscriberView.as_view(), name='subscribed'),
     # path('api/trips/current/following/', api_views.CurrentFollowingView.as_view(), name='following-active-trips'),# view current trips for users 'im' following
     # path('api/trip/future/following/', api_views.FutureFollowingView.as_view(), name='following-future-trips'), # view future trips for users 'im' following
     # path('api/trip/past/following/', api_views.PastFollowingView.as_view(), name='following-past-trips'), # view past trips for users 'im' following
     path('api/contacts/', api_views.UserContactView.as_view(), name='contacts'),
-    path('api/user/<int:user_pk>/subscribers/', api_views.UserSubView.as_view(), name='subscribers')
+    path('api/user/<int:user_pk>/subscribed/', api_views.UserSubView.as_view(), name='subscribed'),
+    path('api/user/<int:user_pk>/current/subscribed/', api_views.UserCurrentSubView.as_view(), name='current-subscribed'),
+    path('api/user/<int:user_pk>/past/subscribed/', api_views.UserPastSubView.as_view(), name='past-subscribed'),
+    path('api/user/<int_user_pk>/future/subscribed/', api_views.UserFutureSubView.as_view(), name='future-subscribed')
+
 ]
