@@ -30,7 +30,7 @@ urlpatterns = [
     path('api/users/<int:pk>/<int:trip_pk>/log/', api_views.TripLogView.as_view(), name='trip-log'), # create a specific log in a trip
     path('api/logs/<int:pk>/images/', api_views.PictureUploadView.as_view(), name='picture-upload'),
     path('api/trips/<int:pk>/', api_views.TripDetailView.as_view(), name='trip-details'), # specific trips with respective logs
-    path('api/log/<int:pk>/', api_views.LogDetailView.as_view(), name='log-details'), # log detail view
+    # path('api/log/<int:pk>/', api_views.LogDetailView.as_view(), name='log-details'), # log detail view
     path('api/log/<int:pk>/comment/', api_views.CommentView.as_view(), name='log-comments'), # add/view comments on logs
     path('api/trips/current/user/', api_views.CurrentActiveView.as_view(), name='user-active-trips'), # view current/active trips for logged in user
     path('api/trips/future/user/', api_views.FutureActiveView.as_view(), name='user-future-trips'), # view future trips for logged in user
@@ -43,8 +43,6 @@ urlpatterns = [
     path('api/user/<int:user_pk>/current/subscribed/', api_views.UserCurrentSubView.as_view(), name='current-subscribed'),
     path('api/user/<int:user_pk>/past/subscribed/', api_views.UserPastSubView.as_view(), name='past-subscribed'),
     path('api/user/<int_user_pk>/future/subscribed/', api_views.UserFutureSubView.as_view(), name='future-subscribed'),
-
-
-    path('api/log/<int:pk>/fixed/', api_views.ImageWorkingView.as_view(), name='image-log'),
+    path('api/log/<int:pk>/', api_views.LogCommentImageView.as_view(), name='image-log'), #log with pic and comments
 
 ]

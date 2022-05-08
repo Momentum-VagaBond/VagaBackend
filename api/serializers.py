@@ -21,12 +21,11 @@ class ContactSerializer(serializers.ModelSerializer):
 
 
 class ImageSerializer(serializers.ModelSerializer):
-    log = serializers.SerializerMethodField()
+    
     class Meta:
         model = Image
         fields = (
             'picture',
-            'log',
             )
 
 
@@ -113,21 +112,22 @@ class LogSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
+
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
     user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
 
-    def get_user(self, obj):
-        return obj.user.username
+    # def get_user(self, obj):
+    #     return obj.instance.user.username
 
-    def get_user_comments(self, obj):
-        return obj.user_comments
+    # def get_user_comments(self, obj):
+
+    #     return obj.user_comments
 
     class Meta:
         model = Comment
         fields = (
-            'user',
+            
             'username',
             'user_first_name',
             'user_last_name',
@@ -213,28 +213,23 @@ class SubscribeSerializer(serializers.ModelSerializer):
             'trip_subscribers'
         )
 
-class LogImageSerializer(serializers.ModelSerializer):
-    other = LogSerializer(many=True, required=False)
-    log = serializers.SerializerMethodField()
-    details = serializers.SerializerMethodField()
-    location = serializers.SerializerMethodField()
 
-    def get_log(self, obj):
-        return obj.log.details
-    def get_details(self, obj):
-        return obj.log.details
-    def get_location(self, obj):
-        return obj.log.location
+
+class LogCommentImageSerializer(serializers.ModelSerializer):
+    images = ImageSerializer(required=False, many=True)
+    log_comments = CommentSerializer(required=False, many=True)
 
     class Meta:
-        model = Image
+        model = Log
         fields = (
             'pk',
-            'user',
-            'other',
-            'log',
-            'picture',
-            'details',
+            'title',
             'location',
-            
+            'latitude',
+            'longitude',
+            'details',
+            'date_logged',
+            'reactions',
+            'images',
+            'log_comments',
         )
