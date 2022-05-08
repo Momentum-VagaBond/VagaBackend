@@ -1,4 +1,3 @@
-#change
 import geocoder
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -15,6 +14,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     bio = models.CharField(max_length=300, default='User has yet to fill in their bio')
     avatar = models.ImageField(blank=True, null=True)
+    email = models.EmailField(max_length=255, unique=True)
 
     def __repr__(self):
         return f"<User username={self.username} pk={self.pk}>"

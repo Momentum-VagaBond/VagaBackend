@@ -3,8 +3,6 @@ from core.models import Image, User, Contact, Trip, Log, Comment
 from rest_framework import serializers
 
 
-
-
 class ContactSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
 
@@ -22,25 +20,12 @@ class ContactSerializer(serializers.ModelSerializer):
 
 
 
-
-class TripContactSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
-    class Meta:
-        model = Contact
-        fields = (
-            
-        )
-
-
-
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = (
             'picture',
-            
             )
-
 
 
 
@@ -97,34 +82,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
-class ProfileSerializer(serializers.ModelSerializer):
-    class TripProfileSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = Trip
-    trip = TripProfileSerializer()
-    class Meta:
-        model = User
-        fields = '__all__'
-
-    def create(self, validated_data ):
-        trip_data = validated_data.pop('trip')
-        user_instance = User.objects.create(**validated_data)
-        Trip.objects.create(bio=user_instance,
-                            title=CharField,
-                            avatar=user_instance.avatar,
-                            **trip_data
-        )
-        return user_instance
-
-
-
-
-
-
-
 class LogSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
-    image = ImageSerializer(required=False)
+    image = ImageSerializer(required=False, source='images')
 
     def get_user(self, obj):
         return obj.user.username
@@ -145,6 +105,8 @@ class LogSerializer(serializers.ModelSerializer):
         )
 
 
+
+# nest image serializer inside log serializer and return picture
 
 
 
@@ -170,7 +132,6 @@ class CommentSerializer(serializers.ModelSerializer):
             'comments',
             'date_commented',
         )
-
 
 
 
@@ -208,9 +169,8 @@ class TripLogSerializer(serializers.ModelSerializer):
 
 
 
-
 class LogCommentSerializer(serializers.ModelSerializer):
-    log = serializers.ImageField(required=False)
+    image = ImageSerializer(required=False, source='images')
     log_comments = CommentSerializer(many=True, required=False)
     user = serializers.SerializerMethodField()
 
@@ -230,9 +190,8 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'date_logged',
             'reactions',
             'log_comments',
-            'log'
+            'image'
         )
-
 
 
 
