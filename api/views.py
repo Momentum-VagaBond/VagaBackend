@@ -132,7 +132,7 @@ class TripLogView(CreateAPIView):
         
 
 
-    def mail_trip_subscribers(log):
+    def mail_trip_subscribers(self):
         contact_list = Contact.objects.all()
         
         email_list = []
@@ -141,10 +141,10 @@ class TripLogView(CreateAPIView):
             email_list.append(contact.email)
             send_mail( 
                 'Hello',
-                'Your friend is in { log.location }', 
+                'Body', 
                 settings.EMAIL_HOST_USER,
                 email_list,
-                # html_message = render_to_string('mail/log.html', {'greeting':'just checking in...'})
+                html_message = render_to_string('mail/log.html', {'greeting':'just checking in...'})
             )
         
 
