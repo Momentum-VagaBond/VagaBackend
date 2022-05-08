@@ -132,7 +132,7 @@ class TripLogView(CreateAPIView):
         
 
 
-    def mail_trip_subscribers(self):
+    def mail_trip_subscribers(log):
         contact_list = Contact.objects.all()
         
         email_list = []
@@ -141,10 +141,10 @@ class TripLogView(CreateAPIView):
             email_list.append(contact.email)
             send_mail( 
                 'Hello',
-                'Body', 
+                'Your friend is in { log.location }', 
                 settings.EMAIL_HOST_USER,
                 email_list,
-                html_message = render_to_string('mail/log.html', {'greeting':'just checking in...'})
+                # html_message = render_to_string('mail/log.html', {'greeting':'just checking in...'})
             )
         
 
@@ -188,6 +188,7 @@ class PictureUploadView(ListCreateAPIView):
 
 
 
+
 # Current active trip for logged in user [GET]
 class CurrentActiveView(ListCreateAPIView):
     queryset = Trip.objects.all()
@@ -218,33 +219,6 @@ class PastActiveView(ListCreateAPIView):
 
 
 
-# Current trip for users 'im' following
-# class CurrentFollowingView(ListCreateAPIView):
-#     queryset = Trip.objects.all()
-#     serializer_class = TripSerializer
-#     def get_queryset(self):
-#         user = self.request.following
-#         return Trip.objects.filter(end__gt=now().date(), begin__lte=now().date(), user=user)
-
-# Future trips for users 'im' following
-# class FutureFollowingView(ListCreateAPIView):
-#     queryset = Trip.objects.all()
-#     serializer_class = TripSerializer
-#     def get_queryset(self):
-#         user = self.request.following
-#         return Trip.objects.filter(begin__gte=now().date(), user=user)
-
-# Past trips for users 'im' following
-# class PastFollowingView(ListCreateAPIView):
-#     queryset = Trip.objects.all()
-#     serializer_class = TripSerializer
-#     def get_queryset(self):
-#         user = self.request.following
-#         return Trip.objects.filter(end__lte=now().date(), user=user)
-
-
-
-
 # Add/Delete/View contacts for a User
 class UserContactView(ListCreateAPIView):
     queryset = Contact.objects.all()
@@ -263,6 +237,36 @@ class UserSubView(ListCreateAPIView):
 
 
 
+# View current trips logged in user is subscribed to
+class UserCurrentSubView(ListCreateAPIView):
+    serializer_class = TripSerializer
+    queryset = Trip.objects.all()
+    def get_queryset(self):
+        user_email = self.request.user.email
+        contact= Contact.objects.get(email=user_email)
+        return contact.trip_subscribers.filter(end__gt=now().date(), begin__lte=now().date())
+
+
+
+# View past trips logged in user is subscribed to
+class UserPastSubView(ListCreateAPIView):
+    serializer_class = TripSerializer
+    queryset = Trip.objects.all()
+    def get_queryset(self):
+        user_email = self.request.user.email
+        contact= Contact.objects.get(email=user_email)
+        return contact.trip_subscribers.filter(end__lte=now().date())
+
+
+
+# View future trips logged in user is subscribed to
+class UserFutureSubView(ListCreateAPIView):
+    serializer_class = TripSerializer
+    queryset = Trip.objects.all()
+    def get_queryset(self):
+        user_email = self.request.user.email
+        contact= Contact.objects.get(email=user_email)
+        return contact.trip_subscribers.filter(begin__gte=now().date())
 
 #         take the logged in user, find that instance
 #         logged in user's email
