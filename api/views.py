@@ -289,7 +289,7 @@ class UserFutureSubView(ListCreateAPIView):
 
 
 
-#
+
 class LogCommentImageView(RetrieveAPIView):
     serializer_class = LogCommentImageSerializer
     queryset = Log.objects.all()
