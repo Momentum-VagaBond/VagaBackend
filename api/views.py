@@ -189,7 +189,6 @@ class PictureUploadView(ListCreateAPIView):
 
 
 
-
 # Current active trip for logged in user [GET]
 class CurrentActiveView(ListCreateAPIView):
     queryset = Trip.objects.all()
@@ -289,8 +288,6 @@ class UserFutureSubView(ListCreateAPIView):
 
 
 
-#
 class LogCommentImageView(RetrieveAPIView):
     serializer_class = LogCommentImageSerializer
     queryset = Log.objects.all()
-

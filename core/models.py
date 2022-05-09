@@ -107,5 +107,5 @@ class Image(models.Model):
     log = models.ForeignKey(Log, on_delete=models.CASCADE, related_name='images')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='images')
     
-    # def __img__(self):
-    #     return self.picture
+    def __img__(self):
+        return self.uploaded_at

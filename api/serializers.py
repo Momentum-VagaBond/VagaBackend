@@ -1,4 +1,3 @@
-from django.forms import CharField
 from core.models import Image, User, Contact, Trip, Log, Comment
 from rest_framework import serializers
 

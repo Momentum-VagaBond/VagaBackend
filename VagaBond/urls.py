@@ -41,5 +41,4 @@ urlpatterns = [
     path('api/user/past/subscribed/', api_views.UserPastSubView.as_view(), name='past-subscribed'),
     path('api/user/future/subscribed/', api_views.UserFutureSubView.as_view(), name='future-subscribed'),
     path('api/log/<int:pk>/', api_views.LogCommentImageView.as_view(), name='image-log'), #log with pic and comments
-
 ]
