@@ -129,11 +129,13 @@ class TripLogView(CreateAPIView):
     def perform_create(self, serializer):
         trip = get_object_or_404(Trip, pk=self.kwargs["trip_pk"])
         serializer.save(user=self.request.user, trip=trip)
-        self.mail_trip_subscribers()
-        
+        log_entry = serializer.instance # grab the serializer to reference it in the HTML formatted email
+        breakpoint()
+        self.mail_trip_subscribers(log_entry)
 
 
-    def mail_trip_subscribers(self):
+
+    def mail_trip_subscribers(self, log_entry):
         contact_list = Contact.objects.all()
         
         email_list = []
@@ -145,9 +147,10 @@ class TripLogView(CreateAPIView):
                 'Body', 
                 settings.EMAIL_HOST_USER,
                 email_list,
-                html_message = render_to_string('mail/log.html', {'greeting':'just checking in...'})
+                html_message = render_to_string('mail/log.html', {'greeting': 'just checking in...', 'entry_log': log_entry})
             )
-        
+        # programmatically declare the  message
+        # look into context
 
 
 
