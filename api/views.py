@@ -19,6 +19,7 @@ from django.utils.timezone import now
 from django.template.loader import render_to_string
 from .permissions import IsTripOwner
 from rest_framework.parsers import FileUploadParser, JSONParser
+from rest_framework.exceptions import NotFound
 
 
 
@@ -232,8 +233,13 @@ class UserSubView(ListCreateAPIView):
     queryset = Trip.objects.all()
     def get_queryset(self):
         user_email = self.request.user.email
-        contact= Contact.objects.get(email=user_email)
-        return contact.trip_subscribers.all()
+        
+        contacts = Contact.objects.all()
+        if user_email not in contacts:
+            raise NotFound(detail='User is not subscribed to any trips.', code=404)
+        else:
+            contact = Contact.objects.get(email=user_email)
+            return contact.trip_subscribers.all()
 
 
 
@@ -242,9 +248,14 @@ class UserCurrentSubView(ListCreateAPIView):
     serializer_class = TripSerializer
     queryset = Trip.objects.all()
     def get_queryset(self):
+        
         user_email = self.request.user.email
-        contact= Contact.objects.get(email=user_email)
-        return contact.trip_subscribers.filter(end__gt=now().date(), begin__lte=now().date())
+        contacts = Contact.objects.all()
+        if user_email not in contacts:
+            raise NotFound(detail='User is not subscribed to any trips.', code=404)
+        else:
+            contact= Contact.objects.get(email=user_email)        
+            return contact.trip_subscribers.filter(end__gt=now().date(), begin__lte=now().date())
 
 
 
@@ -254,8 +265,12 @@ class UserPastSubView(ListCreateAPIView):
     queryset = Trip.objects.all()
     def get_queryset(self):
         user_email = self.request.user.email
-        contact= Contact.objects.get(email=user_email)
-        return contact.trip_subscribers.filter(end__lte=now().date())
+        contacts = Contact.objects.all()
+        if user_email not in contacts:
+            raise NotFound(detail='User is not subscribed to any trips.', code=404)
+        else:
+            contact= Contact.objects.get(email=user_email)
+            return contact.trip_subscribers.filter(end__lte=now().date())
 
 
 
@@ -265,18 +280,13 @@ class UserFutureSubView(ListCreateAPIView):
     queryset = Trip.objects.all()
     def get_queryset(self):
         user_email = self.request.user.email
-        contact= Contact.objects.get(email=user_email)
-        return contact.trip_subscribers.filter(begin__gte=now().date())
+        contacts = Contact.objects.all()
+        if user_email not in contacts:
+            raise NotFound(detail='User is not subscribed to any trips.', code=404)
+        else:
+            contact= Contact.objects.get(email=user_email)
+            return contact.trip_subscribers.filter(begin__gte=now().date())
 
-#         take the logged in user, find that instance
-#         logged in user's email
-#         return all the trips that that user has in the contact list
-# # class UserSubView(ListAPIView):
-#     queryset = Contact.objects.all()
-#     serializer_class = UserSerializer
-#     queryset = User.objects.all
-# contact = get_object_or_404(Contact, user_id=pk)
-# Subscribers = contact.trip_subscribers.all()
 
 
 #
