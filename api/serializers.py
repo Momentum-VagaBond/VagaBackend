@@ -58,9 +58,6 @@ class TripSerializer(serializers.ModelSerializer):
             'username',
             'user_first_name',
             'user_last_name',
-            
-            
-            
         )
 
 
