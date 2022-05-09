@@ -85,7 +85,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class LogSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()
-    image = ImageSerializer(required=False, source='images')
+    images = ImageSerializer(required=False, many=True)
 
     def get_user(self, obj):
         return obj.user.username
@@ -102,7 +102,7 @@ class LogSerializer(serializers.ModelSerializer):
             'details',
             'date_logged',
             'reactions',
-            'image',
+            'images',
         )
 
 
@@ -143,7 +143,7 @@ class TripLogSerializer(serializers.ModelSerializer):
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
     user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
-    image = ImageSerializer(required=False)
+    images = ImageSerializer(required=False, many=True)
 
     def get_user(self, obj):
         return obj.user.username
@@ -162,7 +162,7 @@ class TripLogSerializer(serializers.ModelSerializer):
             'user_last_name',
             'subscribers',
             'trip_logs',
-            'image',
+            'images',
         )
 
     def get_trip_logs(self, instance):
@@ -172,7 +172,7 @@ class TripLogSerializer(serializers.ModelSerializer):
 
 
 class LogCommentSerializer(serializers.ModelSerializer):
-    image = ImageSerializer(required=False, source='images')
+    images = ImageSerializer(required=False, many=True)
     log_comments = CommentSerializer(many=True, required=False)
     user = serializers.SerializerMethodField()
 
@@ -192,7 +192,7 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'date_logged',
             'reactions',
             'log_comments',
-            'image'
+            'images'
         )
 
 
