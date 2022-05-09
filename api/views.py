@@ -130,7 +130,7 @@ class TripLogView(CreateAPIView):
         trip = get_object_or_404(Trip, pk=self.kwargs["trip_pk"])
         serializer.save(user=self.request.user, trip=trip)
         log_entry = serializer.instance # grab the serializer to reference it in the HTML formatted email
-        breakpoint()
+        
         self.mail_trip_subscribers(log_entry)
 
 
