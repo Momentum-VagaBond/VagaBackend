@@ -233,13 +233,9 @@ class UserSubView(ListCreateAPIView):
     queryset = Trip.objects.all()
     def get_queryset(self):
         user_email = self.request.user.email
-        
         contacts = Contact.objects.all()
-        if user_email not in contacts:
-            raise NotFound(detail='User is not subscribed to any trips.', code=404)
-        else:
-            contact = Contact.objects.get(email=user_email)
-            return contact.trip_subscribers.all()
+        contact = Contact.objects.get(email=user_email)
+        return contact.trip_subscribers.all()
 
 
 
@@ -251,11 +247,8 @@ class UserCurrentSubView(ListCreateAPIView):
         
         user_email = self.request.user.email
         contacts = Contact.objects.all()
-        if user_email not in contacts:
-            raise NotFound(detail='User is not subscribed to any trips.', code=404)
-        else:
-            contact= Contact.objects.get(email=user_email)        
-            return contact.trip_subscribers.filter(end__gt=now().date(), begin__lte=now().date())
+        contact= Contact.objects.get(email=user_email)        
+        return contact.trip_subscribers.filter(end__gt=now().date(), begin__lte=now().date())
 
 
 
@@ -266,11 +259,9 @@ class UserPastSubView(ListCreateAPIView):
     def get_queryset(self):
         user_email = self.request.user.email
         contacts = Contact.objects.all()
-        if user_email not in contacts:
-            raise NotFound(detail='User is not subscribed to any trips.', code=404)
-        else:
-            contact= Contact.objects.get(email=user_email)
-            return contact.trip_subscribers.filter(end__lte=now().date())
+
+        contact= Contact.objects.get(email=user_email)
+        return contact.trip_subscribers.filter(end__lte=now().date())
 
 
 
@@ -281,11 +272,9 @@ class UserFutureSubView(ListCreateAPIView):
     def get_queryset(self):
         user_email = self.request.user.email
         contacts = Contact.objects.all()
-        if user_email not in contacts:
-            raise NotFound(detail='User is not subscribed to any trips.', code=404)
-        else:
-            contact= Contact.objects.get(email=user_email)
-            return contact.trip_subscribers.filter(begin__gte=now().date())
+
+        contact= Contact.objects.get(email=user_email)
+        return contact.trip_subscribers.filter(begin__gte=now().date())
 
 
 
