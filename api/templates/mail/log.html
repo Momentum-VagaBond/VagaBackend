@@ -10,7 +10,9 @@
 </head>
 <body>
     <h2>{{ greeting }}</h2>
-    <h3>{{ location }}</h3>
+{% if entry_log %}
+{{ self.location }}
+{% endif %}
     <h3>LOG LOCATION</h3>
     <h3>LOG DETAILS</h3>
 </body>

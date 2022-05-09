@@ -1,5 +1,5 @@
 # **VagaBond**
-## *connecting travelers with those closest to them from far away*
+## *connecting travelers with their folks at home*
 ---
 to run this locally:
 - install django
@@ -57,6 +57,13 @@ Response
 ```
 {
 	"auth_token": "f8g0beeswax502notyours9f72m3"
+	"user_id": 2,
+	"first_name": "Fernando",
+	"last_name": "de Soto",
+	"username": "nomad",
+	"last_login": null,
+	"email": "email@wanderlust@travel.me",
+	"bio": "User has yet to fill in their bio"
 }
 ```
 
@@ -93,9 +100,6 @@ RESPONSE
 ```
 {
 	"id": 2,
-	"username": "alex",
-	"first_name": "alexFirst",
-	"last_name": "Last",
 	"avatar": null,
 	"bio": "User has yet to fill in their bio",
 	"trips": [
@@ -105,10 +109,13 @@ RESPONSE
 			"location": "Paris",
 			"begin": "2022-05-11T00:00:00Z",
 			"end": "2022-05-12T00:00:00Z",
-			"user": "alex",
-			"username": "alex",
-			"user_first_name": "alexFirst",
-			"user_last_name": "Last"
+			"subscribers": [
+				2
+			],
+			"user": "2",
+			"username": "AJord91",
+			"user_first_name": "Alex",
+			"user_last_name": "Jordan"
 		},
 		{
 			"pk": 3,
@@ -116,10 +123,13 @@ RESPONSE
 			"location": "Dallas TX",
 			"begin": "2022-05-11T00:00:00Z",
 			"end": "2022-05-12T00:00:00Z",
-			"user": "alex",
-			"username": "alex",
-			"user_first_name": "alexFirst",
-			"user_last_name": "Last"
+			"subscribers": [
+				2
+			],
+			"user": "2",
+			"username": "AJord91",
+			"user_first_name": "Alex",
+			"user_last_name": "Jordan"
 		},
 		{
 			"pk": 4,
@@ -127,10 +137,13 @@ RESPONSE
 			"location": "Knox TN",
 			"begin": "2022-05-11T00:00:00Z",
 			"end": "2022-05-12T00:00:00Z",
-			"user": "alex",
-			"username": "alex",
-			"user_first_name": "alexFirst",
-			"user_last_name": "Last"
+			"subscribers": [
+				2
+			],
+			"user": "2",
+			"username": "AJord91",
+			"user_first_name": "Alex",
+			"user_last_name": "Jordan"
 		}
 	]
 }
@@ -173,6 +186,58 @@ Response
 
 ### **list of all trips**
 
+Request
+
+> GET /api/trips/
+
+** No JSON input**
+
+Response
+
+> 200 OK
+
+```
+[
+	{
+		"pk": 1,
+		"title": "Party only trip",
+		"location": "Paris",
+		"begin": "2022-05-11T00:00:00Z",
+		"end": "2022-05-12T00:00:00Z",
+		"subscribers": [],
+		"user": "River",
+		"username": "River",
+		"user_first_name": "River",
+		"user_last_name": "Woodring-Starr"
+	},
+	{
+		"pk": 2,
+		"title": "My Fantastic Getaway",
+		"location": "Maui",
+		"begin": "2022-05-04T17:48:27Z",
+		"end": "2022-05-17T17:48:30Z",
+		"subscribers": [
+			1
+		],
+		"user": "River",
+		"username": "River",
+		"user_first_name": "River",
+		"user_last_name": "Woodring-Starr"
+	},
+	{
+		"pk": 5,
+		"title": "Getting some sun!",
+		"location": "Oahu",
+		"begin": "2022-05-08T00:00:00Z",
+		"end": "2022-05-12T00:00:00Z",
+		"subscribers": [],
+		"user": "River",
+		"username": "River",
+		"user_first_name": "River",
+		"user_last_name": "Woodring-Starr"
+	},
+]
+```
 
 ### **View a list of logged in user's trips**
 ---
@@ -196,6 +261,9 @@ Response
 		"location": "Iceland",
 		"begin": "2022-05-22T00:00:00Z",
 		"end": "2022-05-31T00:00:00Z",
+		"subscribers": [
+			2
+		],
 		"user": "emilyflo",
 		"username": "emilyflo",
 		"user_first_name": "",
@@ -207,6 +275,9 @@ Response
 		"location": "Bermuda",
 		"begin": "2022-02-15T00:00:00Z",
 		"end": "2022-02-29T00:00:00Z",
+		"subscribers": [
+			2
+		],
 		"user": "emilyflo",
 		"username": "emilyflo",
 		"user_first_name": "",
@@ -218,6 +289,9 @@ Response
 		"location": "Seattle",
 		"begin": "2022-06-03T00:00:00Z",
 		"end": "2022-06-09T00:00:00Z",
+		"subscribers": [
+			2
+		],
 		"user": "emilyflo",
 		"username": "emilyflo",
 		"user_first_name": "",
@@ -229,6 +303,9 @@ Response
 		"location": "Juno, Alaska",
 		"begin": "2022-07-16T00:00:00Z",
 		"end": "2022-07-24T00:00:00Z",
+		"subscribers": [
+			2
+		],
 		"user": "emilyflo",
 		"username": "emilyflo",
 		"user_first_name": "",
