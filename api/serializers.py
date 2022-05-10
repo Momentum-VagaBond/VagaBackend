@@ -20,16 +20,13 @@ class ContactSerializer(serializers.ModelSerializer):
         )
 
 
+
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = (
             'picture',
-            
             )
-
-
-
 
 
 
@@ -38,7 +35,6 @@ class TripSerializer(serializers.ModelSerializer):
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
     user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
-    
 
     def get_user(self, obj):
         return obj.user.username
@@ -107,22 +103,12 @@ class LogSerializer(serializers.ModelSerializer):
 
 
 
-# nest image serializer inside log serializer and return picture
-
-
 
 class CommentSerializer(serializers.ModelSerializer):
-
     username = serializers.SlugRelatedField(slug_field='username', read_only='True', source='user')
     user_first_name = serializers.SlugRelatedField(slug_field='first_name', read_only='True', source='user')
     user_last_name = serializers.SlugRelatedField(slug_field='last_name', read_only='True', source='user')
 
-    # def get_user(self, obj):
-    #     return obj.instance.user.username
-
-    # def get_user_comments(self, obj):
-
-    #     return obj.user_comments
 
     class Meta:
         model = Comment
@@ -193,24 +179,6 @@ class LogCommentSerializer(serializers.ModelSerializer):
             'reactions',
             'log_comments',
             'images'
-        )
-
-
-
-class SubscribeSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
-    trip_subscribers = serializers.SerializerMethodField()
-    
-    class Meta:
-        model = Contact
-        fields = (
-            'user',
-            'title',
-            'location',
-            'begin',
-            'end',
-            'subscribers',
-            'trip_subscribers'
         )
 
 

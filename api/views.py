@@ -1,23 +1,14 @@
 from django.shortcuts import get_object_or_404
 from core.models import User, Trip, Contact, Log, Comment, Image
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
-from rest_framework import permissions, viewsets
-from .serializers import ContactSerializer, ImageSerializer, LogCommentImageSerializer, LogCommentSerializer, SubscribeSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
-from rest_framework.generics import ListCreateAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, RetrieveUpdateDestroyAPIView
+from .serializers import ContactSerializer, ImageSerializer, LogCommentImageSerializer, LogCommentSerializer, UserSerializer, TripSerializer, LogSerializer, TripLogSerializer, CommentSerializer
+from rest_framework.generics import ListCreateAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.response import Response
-from api import serializers
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-# from djoser.views import UserViewSet as DjoserUserViewSet
-from rest_framework.renderers import TemplateHTMLRenderer
-from django.urls import reverse_lazy
 from django.conf import settings
 from django.core.mail import send_mail
-from django.shortcuts import render
 from django.utils.timezone import now
 from django.template.loader import render_to_string
-from .permissions import IsTripOwner
 from rest_framework.parsers import FileUploadParser, JSONParser
 
 
@@ -59,11 +50,9 @@ class UserProfileView(RetrieveAPIView):
 class TripListView(ListCreateAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
-    
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-        #ADD FOLLOWERS query for contacts for logged in user. which ones are you adding? do you want to use the audience feature? make it an optional field on the serializer or query params (which set of contacts do you want to add?) query for 
-        # who they are and it's different because it's using ManyToMany i.e. instance - trip.followers.add(queryset(contacts))
 
 
 
@@ -76,50 +65,10 @@ class UserTripsView(ListCreateAPIView):
 
 
 
-
-class SubscriberView(ListCreateAPIView):
-    serializer_class = SubscribeSerializer
-    queryset = Trip.objects.all()
-
-#     def get_queryset(self):
-#         """
-#         Get the list of items for this view.
-#         This must be an iterable, and may be a queryset.
-#         Defaults to using `self.queryset`.
-
-#         This method should always be used rather than accessing `self.queryset`
-#         directly, as `self.queryset` gets evaluated only once, and those results
-#         are cached for all subsequent requests.
-
-#         You may want to override this if you need to provide different
-#         querysets depending on the incoming request.
-
-#         (Eg. return a list of items that is specific to the user)
-#         """
-
-#         queryset = self.queryset
-#         if isinstance(queryset, QuerySet):
-#             # Ensure queryset is re-evaluated on each request.
-#             queryset = queryset.all()
-#         return queryset
-
-
-
-
 # Log an entry on a trip [POST]
 class TripLogView(CreateAPIView):
     serializer_class = LogSerializer
     queryset = Trip.objects.all()
-
-
-    # def get_permissions(self):
-    #     """
-    #     Instantiates and returns the list of permissions that this view requires.
-    #     """
-    #     if self.request.method == 'POST':
-    #         self.permission_classes = [IsTripOwner]
-    #     return [permission() for permission in self.permission_classes]
-
 
     def get_queryset(self):
         return self.request.user.trips.all()
@@ -129,9 +78,7 @@ class TripLogView(CreateAPIView):
         trip = get_object_or_404(Trip, pk=self.kwargs["trip_pk"])
         serializer.save(user=self.request.user, trip=trip)
         log_entry = serializer.instance # grab the serializer to reference it in the HTML formatted email
-        
         self.mail_trip_subscribers(log_entry)
-
 
 
     def mail_trip_subscribers(self, log_entry):
@@ -148,8 +95,6 @@ class TripLogView(CreateAPIView):
                 email_list,
                 html_message = render_to_string('mail/log.html', {'greeting': 'just checking in...', 'log_entry': 'Whats up', 'username': 'username',})
             )
-        # programmatically declare the  message
-        # look into context
 
 
 
@@ -196,6 +141,7 @@ class PictureUploadView(ListCreateAPIView):
 class CurrentActiveView(ListCreateAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripLogSerializer
+
     def get_queryset(self):
         user = self.request.user
         return Trip.objects.filter(end__gt=now().date(), begin__lte=now().date(), user=user)
@@ -206,6 +152,7 @@ class CurrentActiveView(ListCreateAPIView):
 class FutureActiveView(ListCreateAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
+
     def get_queryset(self):
         user = self.request.user
         return Trip.objects.filter(begin__gte=now().date(), user=user)
@@ -216,6 +163,7 @@ class FutureActiveView(ListCreateAPIView):
 class PastActiveView(ListCreateAPIView):
     queryset = Trip.objects.all()
     serializer_class = TripSerializer
+
     def get_queryset(self):
         user = self.request.user
         return Trip.objects.filter(end__lte=now().date(), user=user)
@@ -233,6 +181,7 @@ class UserContactView(ListCreateAPIView):
 class UserSubView(ListCreateAPIView):
     serializer_class = TripSerializer
     queryset = Trip.objects.all()
+    
     def get_queryset(self):
         user_email = self.request.user.email
         contact = Contact.objects.get(email=user_email)
@@ -244,6 +193,7 @@ class UserSubView(ListCreateAPIView):
 class UserCurrentSubView(ListCreateAPIView):
     serializer_class = TripSerializer
     queryset = Trip.objects.all()
+
     def get_queryset(self):
         user_email = self.request.user.email
         contact= Contact.objects.get(email=user_email)        
@@ -255,6 +205,7 @@ class UserCurrentSubView(ListCreateAPIView):
 class UserPastSubView(ListCreateAPIView):
     serializer_class = TripSerializer
     queryset = Trip.objects.all()
+
     def get_queryset(self):
         user_email = self.request.user.email
         contact= Contact.objects.get(email=user_email)
@@ -266,6 +217,7 @@ class UserPastSubView(ListCreateAPIView):
 class UserFutureSubView(ListCreateAPIView):
     serializer_class = TripSerializer
     queryset = Trip.objects.all()
+
     def get_queryset(self):
         user_email = self.request.user.email
         contact= Contact.objects.get(email=user_email)
@@ -273,7 +225,7 @@ class UserFutureSubView(ListCreateAPIView):
 
 
 
-
+# View log detail
 class LogCommentImageView(RetrieveAPIView):
     serializer_class = LogCommentImageSerializer
     queryset = Log.objects.all()
