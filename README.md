@@ -353,6 +353,99 @@ Response
 	"details": "just landed safely! Waiting for the rental car...can't wait to check in to the hotel."
 }
 ```
+### **add an image to a log**
+---
+*be sure that you have a token entered under 'Bearer' with the prefix, 'Token'*
+
+request 
+> POST /api/logs/**log-pk**/images/
+
+```
+**Binary File**
+
+
+Select picture to upload
+```
+```
+**Header**
+
+Content-Type           image/png
+Content-Disposition    attachment;filename=**name of selected image**
+```
+
+Response
+>201 Created
+
+```
+{
+	"picture": "https://momentum-vagabond.s3.amazonaws.com/static/**filename.png**"
+}
+```
+
+### **comment on a log**
+---
+*be sure that you have a token entered under 'Bearer' with the prefix, 'Token'*
+
+Request
+> POST /api/log/**log_pk**/comment/
+
+JSON
+
+{    
+	  
+    "comments":"hope the traffic doesnt make you miss the flight!"
+}
+
+Response
+>201
+
+```
+{
+	"username": "alex",
+	"user_first_name": "alex",
+	"user_last_name": "Jordan",
+	"comments": "hope the traffic doesnt make you miss the flight!",
+	"date_commented": "2022-05-09T00:45:36.678143Z"
+}
+```
+
+## **view the log detail page from a trip**
+---
+*be sure that you have a token entered under 'Bearer' with the prefix, 'Token'*
+
+Request
+>GET /api/log/**log_pk/
+
+** No JSON input **
+
+response
+>200 OK
+
+```
+{
+	"pk": 1,
+	"user": "Niles",
+	"title": "Heading out to the beach!"
+	"location": "Myrtle Beach, SC",
+	"latitude": 32.09,
+	"longitude": -32.9,
+	"details": "On the road, cant wait to have some sun on these arms.",
+	"start": false,
+	"log_comments": [
+		{
+			"user": "AomameTheCat",
+			"comments": "DO IT, NILES. COME JOIN ME IN THE SUN.",
+			"date_commented": "2022-04-26T15:04:56.118193Z"
+		},
+		{
+			"user": "Niles",
+			"comments": "Ill be there soon!",
+			"date_commented": "2022-04-27T20:21:21.489310Z"
+		}
+	]
+}
+
+```
 
 ### **view one trip of one user and that trip's respective logs**
 ---
@@ -416,28 +509,58 @@ Response
 }
 ```
 
-### **add comment to log entry**
+
+### **add a contact for a user** 
 
 Request
 
-> POST
+>POST /api/contacts/
 
 JSON
 
-Response
-
 ```
+{
+“first_name”: “Emily”,
+“last_name”: “Starr”,
+“email”: “emilyflo.starr@gmail.com”
+}
+```
+ Response
+
+ ```
+ {
+		"user": "River",
+		"first_name": "Emily",
+		"last_name": "Starr",
+		"email": "emilyflo.starr@gmail.com"
+	}
 ```
 
-### **add comment to log entry**
+### **view contacts to a logged in user**
 
 Request
 
-> POST
+>GET
 
-JSON
+** No JSON input **
 
 Response
+```
+{
+		"user": "River",
+		"first_name": "Emily",
+		"last_name": "Starr",
+		"email": "emilyflow.starr@gmail.com"
+	
+	   	"user": "River",
+		"first_name": "Alex",
+		"last_name": "Jordan",
+		"email": "aljord91@gmail.com"
+	
+	}
 
 ```
-```
+
+
+
+
