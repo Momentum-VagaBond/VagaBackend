@@ -19,7 +19,6 @@ from django.utils.timezone import now
 from django.template.loader import render_to_string
 from .permissions import IsTripOwner
 from rest_framework.parsers import FileUploadParser, JSONParser
-from rest_framework.exceptions import NotFound
 
 
 
@@ -143,11 +142,11 @@ class TripLogView(CreateAPIView):
             
             email_list.append(contact.email)
             send_mail( 
-                'Hello',
+                'Someone you know is checking in',
                 'Body', 
                 settings.EMAIL_HOST_USER,
                 email_list,
-                html_message = render_to_string('mail/log.html', {'greeting': 'just checking in...', 'entry_log': log_entry})
+                html_message = render_to_string('mail/log.html', {'greeting': 'just checking in...', 'log_entry': 'Whats up', 'username': 'username',})
             )
         # programmatically declare the  message
         # look into context

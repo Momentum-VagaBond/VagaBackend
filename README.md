@@ -163,7 +163,8 @@ Request
 	"title": "I'm going on a Viking adventure!",
 	"location": "Iceland",
 	"begin":"2022-05-11T00:00:00.000Z",
-	"end":"2022-05-19T00:00:00.000Z"
+	"end":"2022-05-19T00:00:00.000Z",
+	"subscribers": [*contact-pk*, *contact-pk*]
 }
 ```
 
@@ -177,6 +178,10 @@ Response
 	"location": "Iceland",
 	"begin": "2022-06-21 00:00:00-00",
 	"end": "2022-07-01 00:00:00-00",
+	"subscribers": [
+		2,
+		3
+	]
 	"user": "nomad",
 	"username": "nomad",
 	"user_first_name": "Willem",
@@ -230,7 +235,10 @@ Response
 		"location": "Oahu",
 		"begin": "2022-05-08T00:00:00Z",
 		"end": "2022-05-12T00:00:00Z",
-		"subscribers": [],
+		"subscribers": [
+			2,
+			3
+		],
 		"user": "River",
 		"username": "River",
 		"user_first_name": "River",
@@ -324,10 +332,7 @@ Request
 JSON
 ```
 {
-	"user_id": 2,
-	"trip": 2,
-	"latitude": "64.13230",
-	"longitude": "-21.94179",
+	"title": "Made it!"
 	"location": "Reykjavík City Airport",
 	"details": "just landed safely! Waiting for the rental car...can't wait to check in to the hotel."
 }
@@ -341,6 +346,7 @@ Response
 	"pk": 33,
 	"user": "emilyflo",
 	"trip": 2,
+	"title": "Made it!"
 	"location": "Reykjavík City Airport",
 	"latitude": 64.1323,
 	"longitude": -21.94179,
@@ -355,10 +361,7 @@ Response
 Request
 > GET /api/trips/**trip-pk/
 
-JSON
-```
------
-```
+** No JSON input **
 
 Response
 > 200 OK
@@ -373,33 +376,41 @@ Response
 	"username": "emilyflo",
 	"user_first_name": "Emily",
 	"user_last_name": "Starr",
+	"subscribers": [
+		1
+	]
 	"trip_logs": [
 		{
 			"pk": 1,
 			"user": "emilyflo",
-			"location": "location 1 Canada trip",
+			"title": "All packed up!",
+			"location": "Pittsburgh",
 			"latitude": 23.0,
 			"longitude": 32432.0,
-			"details": "this is the details section of Canada trip, log 1",
-			"start": false
+			"details": "Ready to head for the airport!",
+			"date_logged": "2022-05-22T01:27:08.491325Z",
+			"images": []
 		},
 		{
 			"pk": 2,
 			"user": "emilyflo",
-			"location": "location 2",
+			"title": "Stuck in traffic",
+			"location": "Somewhere on 376",
 			"latitude": 342.0,
 			"longitude": 23423.0,
-			"details": "details for location 2, canada trip, emily",
-			"start": false
+			"details": "rush hour is standing between me and fresh air",
+			"date_logged": "2022-05-22T01:27:09:271325Z",
+			"images": []
 		},
 		{
 			"pk": 9,
 			"user": "emilyflo",
+			"title": "Just went through TSA",
 			"location": "Pittsburgh Airport",
 			"latitude": 264.45,
 			"longitude": 353.35,
 			"details": "I'm getting antsy to get on this plane!",
-			"start": false
+			"images": []
 		}
 	]
 }
