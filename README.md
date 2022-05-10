@@ -540,6 +540,8 @@ JSON
 
 Request
 
+api/contacts/
+
 >GET
 
 ** No JSON input **
@@ -561,6 +563,232 @@ Response
 
 ```
 
+### **view current trips of the logged in user**
 
+Request
 
+/api/trips/current/user/
 
+>GET
+
+** No JSON input **
+
+Response
+```
+	{
+		"pk": 5,
+		"title": "Goin to the beach",
+		"location": "Myrtle Beach, SC",
+		"begin": "2022-04-24T00:00:00Z",
+		"end": "2022-05-13T00:00:00Z",
+		"user": "Alex91",
+		"username": "Alex91",
+		"user_first_name": "Alex",
+		"user_last_name": "Jordan"
+}
+```
+
+### **view future trips of the logged in user**
+
+Request
+
+/api/trips/future/user/
+
+>GET
+
+** No JSON input **
+
+Response
+```
+	{
+		"pk": 5,
+		"title": "Carribean Vacation",
+		"location": "Nassau, Bahamas",
+		"begin": "2024-05-02T00:00:00Z",
+		"end": "2024-05-13T00:00:00Z",
+		"user": "Alex91",
+		"username": "Alex91",
+		"user_first_name": "Alex",
+		"user_last_name": "Jordan"
+}
+```
+
+### **view past trips of the logged in user**
+
+Request
+
+/api/trips/past/user/
+
+>GET
+
+** No JSON input **
+
+Response
+```
+	{
+		"pk": 5,
+		"title": "Viewin the Keys",
+		"location": "Flordia Keys, FL",
+		"begin": "2021-04-24T00:00:00Z",
+		"end": "2021-05-13T00:00:00Z",
+		"user": "Alex91",
+		"username": "Alex91",
+		"user_first_name": "Alex",
+		"user_last_name": "Jordan"
+}
+```
+
+### **view all trips the logged in user is subscribed to**
+
+Request
+
+/api/user/subscribed/
+
+>GET
+
+** No JSON input **
+
+Response
+```
+[
+	{
+		"pk": 36,
+		"title": "My Fantastic Getaway",
+		"location": "Austin, TX",
+		"begin": "2022-05-01T18:18:09Z",
+		"end": "2022-05-31T18:18:13Z",
+		"subscribers": [
+			1,
+			2,
+			13
+		],
+		"user": "Alex91",
+		"username": "Alex91",
+		"user_first_name": "Alex",
+		"user_last_name": "Jordan"
+	}
+]
+```
+
+### **view past trips the logged in user is subscribed to**
+
+Request
+
+/api/user/past/subscribed/
+
+>GET
+
+** No JSON input **
+
+Response
+```
+[
+	{
+		"pk": 3,
+		"title": "Seeing some bears",
+		"location": "Gatlinburg, TN",
+		"begin": "2021-05-01T18:18:09Z",
+		"end": "2021-05-31T18:18:13Z",
+		"subscribers": [
+			1,
+		],
+		"user": "Alex91",
+		"username": "Alex91",
+		"user_first_name": "Alex",
+		"user_last_name": "Jordan"
+	}
+]
+```
+
+### **view current trips the logged in user is subscribed to**
+
+Request
+
+/api/user/current/subscribed/
+
+>GET
+
+** No JSON input **
+
+Response
+```
+[
+	{
+		"pk": 36,
+		"title": "Getting some sun",
+		"location": "Charleston, SC",
+		"begin": "2022-05-01T18:18:09Z",
+		"end": "2022-05-31T18:18:13Z",
+		"subscribers": [
+			1,
+			2,
+			13
+		],
+		"user": "EmFlo",
+		"username": "EmFlo",
+		"user_first_name": "Emily",
+		"user_last_name": "Starr"
+	}
+	{
+		"pk": 36,
+		"title": "Headed to the big game",
+		"location": "Knoxville, TN",
+		"begin": "2022-05-01T18:18:09Z",
+		"end": "2022-05-31T18:18:13Z",
+		"subscribers": [
+			2,
+			13
+		],
+		"user": "Alex91",
+		"username": "Alex91",
+		"user_first_name": "Alex",
+		"user_last_name": "Jordan"
+	}
+]
+```
+### **view future trips the logged in user is subscribed to**
+
+Request
+
+/api/user/future/subscribed/
+
+>GET
+
+** No JSON input **
+
+Response
+```
+[
+	{
+		"pk": 65,
+		"title": "Gonna put it all on red",
+		"location": "Las Vegas, NV",
+		"begin": "2024-05-01T18:18:09Z",
+		"end": "2024-05-31T18:18:13Z",
+		"subscribers": [
+			1,
+			2,
+			13
+		],
+		"user": "EmFlo",
+		"username": "EmFlo",
+		"user_first_name": "Emily",
+		"user_last_name": "Starr"
+	}
+	{
+		"pk": 74,
+		"title": "Going to get me a baguette!",
+		"location": "Paris, France",
+		"begin": "2024-05-01T18:18:09Z",
+		"end": "2024-05-31T18:18:13Z",
+		"subscribers": [
+			2,
+			13
+		],
+		"user": "Alex91",
+		"username": "Alex91",
+		"user_first_name": "Alex",
+		"user_last_name": "Jordan"
+	}
+]
+```
