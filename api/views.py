@@ -93,7 +93,7 @@ class TripLogView(CreateAPIView):
                 'Body', 
                 settings.EMAIL_HOST_USER,
                 email_list,
-                html_message = render_to_string('mail/log.html', {'greeting': 'just checking in...', 'log_entry': 'Whats up', 'username': 'username',})
+                html_message = render_to_string('mail/log.html', {'greeting': 'just checking in...'})
             )
 
 
